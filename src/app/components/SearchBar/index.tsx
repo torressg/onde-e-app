@@ -18,6 +18,7 @@ const SearchBar: React.FC = () => {
           backgroundColor: "#1c1c1c",
           color: "white",
           borderRadius: 30,
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)"
         },
       }}
       className="w-80"
