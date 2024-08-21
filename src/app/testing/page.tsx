@@ -1,5 +1,5 @@
 import React from "react";
-import BurgerMenu from "../components/BurguerMenu/index"; // Certifique-se de que o caminho esteja correto
+import BurgerMenu from "../components/BurgerMenu/index"; // Certifique-se de que o caminho esteja correto
 
 const TestBurger: React.FC = () => {
     return (

@@ -1,6 +1,6 @@
 import FullScreenMap from "../app/components/Map/index";
 import SearchBar from "../app/components/SearchBar/index";
-import BurgerMenu from "../app/components/BurguerMenu";
+import BurgerMenu from "../app/components/BurgerMenu";
 
 const Home: React.FC = () => {
   return (
