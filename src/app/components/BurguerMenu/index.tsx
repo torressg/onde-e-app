@@ -20,13 +20,12 @@ const BurgerMenu = () => {
 
             <div className={`fixed top-0 left-0 w-full h-screen bg-black transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition duration-300 ease-in-out`}>
                 <nav className="flex flex-col items-center justify-center h-full">
-                    <button className="p-4">
-                        <CloseIcon className="text-yellow-500" onClick={toggleMenu} />
-                    </button>
                     <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Home</a>
-                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">About</a>
-                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Services</a>
-                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Contact</a>
+                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Ambientes</a>
+                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Contato</a>
+                    <button onClick={toggleMenu} className="text-yellow-500 text-2xl font-semibold p-4">
+                        Fechar
+                    </button>
                 </nav>
             </div>
         </div>
