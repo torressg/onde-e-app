@@ -29,12 +29,20 @@ const SearchBar: React.FC<{ inputValue: string; setInputValue: React.Dispatch<Re
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Evita o comportamento padrão do formulário
+      handleClickSearchToStorageLocal(); // Chama a função de envio ao pressionar Enter
+    }
+  };
+
   return (
     <TextField
       variant="outlined"
       placeholder="Para onde?"
       value={inputValue}
       onChange={handleInputChange}
+      onKeyDown={handleKeyDown}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
