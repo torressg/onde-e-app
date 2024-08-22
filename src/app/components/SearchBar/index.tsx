@@ -13,7 +13,7 @@ interface SearchBarProps {
 
 }
 
-const SearchBar = ({ inputValue, setInputValue }: SearchBarProps) => {
+const SearchBar: React.FC<{ inputValue: string; setInputValue: React.Dispatch<React.SetStateAction<string>> }> = ({ inputValue, setInputValue }) => {
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,11 +22,9 @@ const SearchBar = ({ inputValue, setInputValue }: SearchBarProps) => {
 
   const handleClickSearchToStorageLocal = () => {
     if (inputValue.trim()) {
-      if ((LocalStorageService.getRecentDestinations()).length === 4) {
-        LocalStorageService.deleteLastOneDestination()
-      }
-      LocalStorageService.setRecentDestination(inputValue);
-
+      // Adiciona o novo destino ao localStorage e garante o limite de 4 itens
+      LocalStorageService.setRecentDestination(inputValue.trim());
+      setInputValue(""); // Limpa o input após enviar
       console.log('Search icon clicked and destination saved');
     }
   };
