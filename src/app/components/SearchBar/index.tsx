@@ -16,7 +16,11 @@ const SearchBar: React.FC = () => {
 
   const handleClickSearchToStorageLocal = () => {
     if (inputValue.trim()) {
+      if ((LocalStorageService.getRecentDestinations()).length === 4) {
+        LocalStorageService.deleteLastOneDestination()
+      }
       LocalStorageService.setRecentDestination(inputValue);
+
       console.log('Search icon clicked and destination saved');
     }
   };

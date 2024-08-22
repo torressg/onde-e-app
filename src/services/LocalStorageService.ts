@@ -30,8 +30,17 @@ export const LocalStorageService = {
     return []; // Retorna uma lista vazia se não houver nada no localStorage
   },
 
-  deleteRecentDestinations: function () {
-    // Remove a lista de destinos
-    localStorage.removeItem("RecentDestinations");
-  },
+  deleteLastOneDestination: function () {
+    // Recupera a lista atual do localStorage
+    const recentDestinations = this.getRecentDestinations();
+
+    // Remove o primeiro item da lista
+    recentDestinations.pop();
+
+    // Armazena a lista atualizada no localStorage
+    localStorage.setItem(
+      "RecentDestinations",
+      JSON.stringify(recentDestinations)
+    );
+  }
 };
