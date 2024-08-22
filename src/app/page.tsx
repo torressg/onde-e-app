@@ -11,10 +11,10 @@ const Home: React.FC = () => {
 
     <div>
       <header>
-        <div className="absolute top-4 left-4 z-50">
+        <div className="fixed top-4 left-4 z-50">
           <BurgerMenu />
         </div>
-        <div className="absolute top-4 right-4 z-40">
+        <div className="fixed top-4 right-4 z-40">
           <RecentMenu inputValue={inputValue} />
         </div>
       </header>
