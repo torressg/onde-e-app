@@ -7,8 +7,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import SendIcon from '@mui/icons-material/Send';
 import { LocalStorageService } from '../../../services/LocalStorageService';
 
-const SearchBar: React.FC = () => {
-  const [inputValue, setInputValue] = useState<string>("");
+interface SearchBarProps {
+  inputValue: string;
+  setInputValue: (value: string) => void;
+
+}
+
+const SearchBar = ({ inputValue, setInputValue }: SearchBarProps) => {
+
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
