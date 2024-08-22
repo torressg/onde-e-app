@@ -1,7 +1,7 @@
-import FullScreenMap from "../app/components/Map/index";
-import SearchBar from "../app/components/SearchBar/index";
-import BurgerMenu from "../app/components/BurgerMenu";
-import RecentMenu from "../app/components/RecentMenu";
+import FullScreenMap from "./components/Map/index";
+import SearchBar from "./components/SearchBar/index";
+import BurgerMenu from "./components/BurgerMenu";
+import RecentMenu from "./components/RecentMenu";
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { CacheProvider } from '@chakra-ui/next-js';
