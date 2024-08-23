@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { FeatureCollection, Geometry, Point, Polygon, MultiPolygon } from 'geojson';
+import { FeatureCollection, Geometry } from 'geojson';
 
 const FullScreenMap = () => {
 
@@ -16,7 +16,6 @@ const FullScreenMap = () => {
         });
 
         mapInstance.on('load', () => {
-            // Adicione o primeiro GeoJSON
             mapInstance.addSource('geojson1', {
                 type: 'geojson',
                 data: '/data/uscsAmbientesMap.geojson'
@@ -33,7 +32,6 @@ const FullScreenMap = () => {
                 }
             });
 
-            // Adicione o segundo GeoJSON
             mapInstance.addSource('geojson2', {
                 type: 'geojson',
                 data: '/data/uscsCirculacaoMap.geojson'
@@ -50,7 +48,6 @@ const FullScreenMap = () => {
                 }
             });
 
-            // Ajuste o foco do mapa para o bounding box dos dois GeoJSONs
             const bounds = new maplibregl.LngLatBounds();
 
             const extendBounds = (geometry: Geometry) => {
@@ -77,7 +74,24 @@ const FullScreenMap = () => {
                             mapInstance.fitBounds(bounds, { padding: 20 });
                         });
                 });
-                
+
+            // Adiciona evento de clique com Popup
+            mapInstance.on('click', 'geojson1-layer', (e) => {
+                if (e.features && e.features.length > 0) {
+                    const coordinates = e.features[0].geometry.type === "Point" ?
+                        (e.features[0].geometry.coordinates as [number, number]) :
+                        (e.lngLat.toArray() as [number, number]);
+
+                    const properties = e.features[0].properties;
+                    new maplibregl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(`
+                            <h3 style="color: black;">${properties.title || 'No Title'}</h3>
+                            <p style="color: black;">${properties.subtitle || 'No Subtitle'}</p>
+                        `)
+                        .addTo(mapInstance);
+                }
+            });
         });
 
         return () => mapInstance.remove();
