@@ -11,8 +11,10 @@ const FullScreenMap = () => {
         const mapInstance = new maplibregl.Map({
             container: 'map',
             style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-            center: [0, 0],
-            zoom: 2
+            center: [-46.57924457368841,-23.618155335655388], // Substitua pelas coordenadas específicas-23.618155335655388, -46.57924457368841
+            zoom: 15, // Ajuste o zoom para iniciar focado
+            // bearing: 30, // Ângulo de rotação para alinhar o corredor
+            pitch: 20, // Inclinação para uma visão mais tridimensional
         });
 
         mapInstance.on('load', () => {
@@ -21,14 +23,17 @@ const FullScreenMap = () => {
                 data: '/data/uscsAmbientesMap.geojson'
             });
 
+
             mapInstance.addLayer({
-                id: 'geojson1-layer',
-                type: 'fill',
+                id: 'geojson3d-layer',
+                type: 'fill-extrusion',
                 source: 'geojson1',
                 layout: {},
                 paint: {
-                    'fill-color': '#888888',
-                    'fill-opacity': 0.5
+                    'fill-extrusion-color': '#F8A801',
+                    'fill-extrusion-height': 5,
+                    'fill-extrusion-base': 1,
+                    'fill-extrusion-opacity': 1
                 }
             });
 
@@ -43,10 +48,10 @@ const FullScreenMap = () => {
                 source: 'geojson2',
                 layout: {},
                 paint: {
-                    'fill-color': '#FF0000',
-                    'fill-opacity': 0.5
+                    'fill-color': '#888888',
+                    'fill-opacity': 1
                 }
-            });
+            }, 'geojson3d-layer');
 
             const bounds = new maplibregl.LngLatBounds();
 
@@ -76,7 +81,7 @@ const FullScreenMap = () => {
                 });
 
             // Adiciona evento de clique com Popup
-            mapInstance.on('click', 'geojson1-layer', (e) => {
+            mapInstance.on('click', 'geojson3d-layer', (e) => {
                 if (e.features && e.features.length > 0) {
                     const coordinates = e.features[0].geometry.type === "Point" ?
                         (e.features[0].geometry.coordinates as [number, number]) :
