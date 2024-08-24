@@ -80,7 +80,7 @@ const BurgerMenu = () => {
               color="#F8A801"
               fontSize="2xl"
               fontWeight="semibold"
-              p="4"
+              p="8"
               bg="transparent"
               _hover={{ textDecoration: "underline" }}
               _active={{ background: "transparent" }}
