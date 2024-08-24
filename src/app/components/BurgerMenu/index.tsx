@@ -1,35 +1,97 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  ChakraProvider,
+  Flex,
+  IconButton,
+  Link,
+} from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const BurgerMenu = () => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
-    };
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-    return (
-        <div className="relative z-50">
-            <button onClick={toggleMenu} className="flex flex-col justify-center items-center w-10 h-10 bg-neutral-900 rounded">
-                <div className={`w-6 h-1 bg-yellow-500 rounded transform transition duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></div>
-                <div className={`w-6 h-1 bg-yellow-500 rounded my-1 transform transition duration-300 ${isOpen ? 'opacity-0' : ''}`}></div>
-                <div className={`w-6 h-1 bg-yellow-500 rounded transform transition duration-300 ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}></div>
-            </button>
+  return (
+    <ChakraProvider>
+      <Box position="relative" zIndex="50">
+        <Button
+          as={IconButton}
+          onClick={toggleMenu}
+          icon={<HamburgerIcon />}
+          w="10"
+          h="10"
+          color="#F8A801"
+          bg="#1c1c1c"
+          _hover={{ bg: "#F8A801", color: "#1C1C1C" }}
+        />
 
-            <div className={`fixed top-0 left-0 w-full h-screen bg-black transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition duration-300 ease-in-out`}>
-                <nav className="flex flex-col items-center justify-center h-full">
-                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Home</a>
-                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Ambientes</a>
-                    <a href="#" className="text-yellow-500 text-2xl font-semibold p-4">Contato</a>
-                    <button onClick={toggleMenu} className="text-yellow-500 text-2xl font-semibold p-4">
-                        Fechar
-                    </button>
-                </nav>
-            </div>
-        </div>
-    );
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          w="full"
+          h="100vh"
+          bg="black"
+          transform={isOpen ? "translateX(0)" : "translateX(-100%)"}
+          transition="transform 0.3s ease-in-out"
+        >
+          <Flex
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            h="full"
+          >
+            <Link
+              href="#"
+              color="#F8A801"
+              fontSize="2xl"
+              fontWeight="semibold"
+              p="4"
+            >
+              Home
+            </Link>
+            <Link
+              href="#"
+              color="#F8A801"
+              fontSize="2xl"
+              fontWeight="semibold"
+              p="4"
+            >
+              Ambientes
+            </Link>
+            <Link
+              href="#"
+              color="#F8A801"
+              fontSize="2xl"
+              fontWeight="semibold"
+              p="4"
+            >
+              Contato
+            </Link>
+            <Button
+              onClick={toggleMenu}
+              color="#F8A801"
+              fontSize="2xl"
+              fontWeight="semibold"
+              p="4"
+              bg="transparent"
+              _hover={{ textDecoration: "underline" }}
+              _active={{ background: "transparent" }}
+            >
+              Fechar
+            </Button>
+          </Flex>
+        </Box>
+      </Box>
+    </ChakraProvider>
+  );
 };
 
 export default BurgerMenu;
