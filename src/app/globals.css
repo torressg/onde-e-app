@@ -6,6 +6,9 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --onde-e-escuro-800: #1c1c1c;
+  --onde-e-escuro-900: #1d1d1d;
+  --onde-e-laranja: #F8A801;
 }
 
 @media (prefers-color-scheme: dark) {

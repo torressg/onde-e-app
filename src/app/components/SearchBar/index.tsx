@@ -1,21 +1,24 @@
-"use client"
+"use client";
 
-import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import SendIcon from '@mui/icons-material/Send';
-import { LocalStorageService } from '../../../services/LocalStorageService';
+import React from "react";
+import { LocalStorageService } from "../../../services/LocalStorageService";
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { SearchIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 interface SearchBarProps {
   inputValue: string;
   setInputValue: (value: string) => void;
-
 }
 
-const SearchBar: React.FC<{ inputValue: string; setInputValue: React.Dispatch<React.SetStateAction<string>> }> = ({ inputValue, setInputValue }) => {
-
-
+const SearchBar: React.FC<{
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ inputValue, setInputValue }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
@@ -25,7 +28,7 @@ const SearchBar: React.FC<{ inputValue: string; setInputValue: React.Dispatch<Re
       // Adiciona o novo destino ao localStorage e garante o limite de 4 itens
       LocalStorageService.setRecentDestination(inputValue.trim());
       setInputValue(""); // Limpa o input após enviar
-      console.log('Search icon clicked and destination saved');
+      console.log("Search icon clicked and destination saved");
     }
   };
 
@@ -37,34 +40,40 @@ const SearchBar: React.FC<{ inputValue: string; setInputValue: React.Dispatch<Re
   };
 
   return (
-    <TextField
-      variant="outlined"
-      placeholder="Para onde?"
-      value={inputValue}
-      onChange={handleInputChange}
-      onKeyDown={handleKeyDown}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon style={{ color: "#F8A801", width: "28px" }} />
-          </InputAdornment>
-        ),
-        style: {
-          backgroundColor: "#1c1c1c",
-          color: "white",
-          borderRadius: 30,
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)"
-        },
-        endAdornment: inputValue && (
-          <InputAdornment position="end">
-            <div onClick={handleClickSearchToStorageLocal} style={{ cursor: 'pointer' }}>
-              <SendIcon style={{ color: "#F8A801", width: "28px" }} />
-            </div>
-          </InputAdornment>
-        )
-      }}
-      className="w-80"
-    />
+    <InputGroup size="md" className="w-80">
+      <InputLeftElement
+        pointerEvents="none"
+        height="100%"
+        display="flex"
+      >
+        <SearchIcon color="#F8A801" w="2rem" h="2rem" pl="0.813rem" />
+      </InputLeftElement>
+      <Input
+        placeholder="Para onde?"
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        bg="#1c1c1c"
+        borderRadius="30px"
+        boxShadow="0 4px 10px rgba(0, 0, 0, 0.3)"
+        pl="3rem"
+        className="w-80 h-12"
+      />
+      {inputValue && (
+        <InputRightElement
+          width="3rem"
+          height="100%"
+          display="flex"
+        >
+          <div
+            onClick={handleClickSearchToStorageLocal}
+            style={{ cursor: "pointer" }}
+          >
+            <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
+          </div>
+        </InputRightElement>
+      )}
+    </InputGroup>
   );
 };
 
