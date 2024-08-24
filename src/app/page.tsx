@@ -1,5 +1,5 @@
-'use client'
-import FullScreenMap from "./components/Map/index";
+"use client";
+import FullScreenMap from "./components/Map"
 import SearchBar from "./components/SearchBar/index";
 import BurgerMenu from "./components/BurgerMenu";
 import RecentMenu from "./components/RecentMenu";
@@ -8,7 +8,6 @@ import { useState } from "react";
 const Home: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   return (
-
     <div>
       <header>
         <div className="fixed top-4 left-4 z-50">

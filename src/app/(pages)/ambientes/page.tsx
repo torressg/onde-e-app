@@ -1,6 +1,6 @@
 import React from "react";
 
-const AmbientePage: React.FC = () => {
+const AmbientePage = () => {
     return (
         <div className="relative">
             <h1>Ambientes</h1>

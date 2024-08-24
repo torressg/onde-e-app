@@ -10,6 +10,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import NextLink from "next/link";
 
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ const BurgerMenu = () => {
         <Button
           as={IconButton}
           onClick={toggleMenu}
-          icon={<HamburgerIcon boxSize={6}/>}
+          icon={<HamburgerIcon boxSize={6} />}
           w="10"
           h="10"
           color="#F8A801"
@@ -49,7 +50,8 @@ const BurgerMenu = () => {
             h="full"
           >
             <Link
-              href="#"
+              as={NextLink}
+              href="/"
               color="#F8A801"
               fontSize="2xl"
               fontWeight="semibold"
@@ -58,7 +60,8 @@ const BurgerMenu = () => {
               Home
             </Link>
             <Link
-              href="#"
+              as={NextLink}
+              href="/ambientes"
               color="#F8A801"
               fontSize="2xl"
               fontWeight="semibold"
@@ -67,7 +70,8 @@ const BurgerMenu = () => {
               Ambientes
             </Link>
             <Link
-              href="#"
+              as={NextLink}
+              href="/contato"
               color="#F8A801"
               fontSize="2xl"
               fontWeight="semibold"
