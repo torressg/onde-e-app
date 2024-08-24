@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { LocalStorageService } from "../../../services/LocalStorageService";
 import {
   Input,
@@ -9,11 +9,6 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { SearchIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-
-interface SearchBarProps {
-  inputValue: string;
-  setInputValue: (value: string) => void;
-}
 
 const SearchBar: React.FC<{
   inputValue: string;
@@ -53,6 +48,8 @@ const SearchBar: React.FC<{
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
+        type="search"
+        enterKeyHint="go" 
         bg="#1c1c1c"
         borderRadius="30px"
         boxShadow="0 4px 10px rgba(0, 0, 0, 0.3)"
