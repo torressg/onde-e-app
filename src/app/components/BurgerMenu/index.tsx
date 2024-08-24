@@ -24,7 +24,7 @@ const BurgerMenu = () => {
         <Button
           as={IconButton}
           onClick={toggleMenu}
-          icon={<HamburgerIcon />}
+          icon={<HamburgerIcon boxSize={6}/>}
           w="10"
           h="10"
           color="#F8A801"
