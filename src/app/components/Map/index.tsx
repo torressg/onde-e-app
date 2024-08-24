@@ -91,8 +91,8 @@ const FullScreenMap = () => {
                     new maplibregl.Popup()
                         .setLngLat(coordinates)
                         .setHTML(`
-                            <h3 style="color: black;">${properties.title || 'No Title'}</h3>
-                            <p style="color: black;">${properties.subtitle || 'No Subtitle'}</p>
+                            <strong><h3 style="color: black;">${properties.title || 'No Title'}</h3></strong>
+                            <p style="color: black;">${properties.TipoAmb || 'No Subtitle'}</p>
                         `)
                         .addTo(mapInstance);
                 }
