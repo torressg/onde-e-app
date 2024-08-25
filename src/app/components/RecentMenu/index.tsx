@@ -32,6 +32,9 @@ const RecentMenu = ({ inputValue }: { inputValue: string }) => {
                     <MenuList
                         bg="#1C1C1C"
                         position="absolute"
+                        sx={{
+                            borderWidth: 0, 
+                          }}
                         right={-10}
                     >
                         <MenuGroup title="Destinos recentes" color="white">
