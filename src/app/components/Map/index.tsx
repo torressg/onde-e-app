@@ -13,7 +13,7 @@ const FullScreenMap = () => {
             style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
             center: [-46.57924457368841,-23.618155335655388], // Substitua pelas coordenadas específicas-23.618155335655388, -46.57924457368841
             zoom: 12, // Ajuste o zoom para iniciar focado
-            minZoom: 19,
+            minZoom: 18,
             maxZoom: 20,
             // bearing: 30, // Ângulo de rotação para alinhar o corredor
             pitch: 20, // Inclinação para uma visão mais tridimensional
