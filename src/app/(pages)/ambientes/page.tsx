@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import BurgerMenu from "@/app/components/BurgerMenu";
 import {
   IconButton,
@@ -7,9 +8,16 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
 } from "@chakra-ui/react";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import React from "react";
 
 const sala1 = {
   nome: "Sala 3",
@@ -20,11 +28,26 @@ const sala2 = {
   nome: "Sala 4",
   tipo: "Sala de Aula",
 };
+
 const AmbientePage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedAmbiente, setSelectedAmbiente] = useState(null);
+
+  const openModal = (ambiente) => {
+    setSelectedAmbiente(ambiente);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setSelectedAmbiente(null);
+  };
+
   let ambientes = [sala1, sala2];
+
   return (
     <>
-      <div className=" bg-ambientBG min-h-screen">
+      <div className="bg-ambientBG min-h-screen">
         <header className="pt-4">
           <div className="fixed ml-4 z-50">
             <BurgerMenu />
@@ -52,13 +75,36 @@ const AmbientePage = () => {
         <hr className="text-laranja py-5" />
         <div className="grid justify-center space-y-5">
           {ambientes.map((ambiente, index) => (
-            <div key={index} className="bg-cinza w-80 h-14 rounded-2xl drop-shadow-md ">
+            <div
+              key={index}
+              className="bg-cinza w-80 h-14 rounded-2xl drop-shadow-md cursor-pointer"
+              onClick={() => openModal(ambiente)}
+            >
               <h2 className="px-5 pt-1 text-base">{ambiente.nome}</h2>
               <p className="px-5 text-xs text-subtitulo">{ambiente.tipo}</p>
             </div>
           ))}
         </div>
       </div>
+
+      {selectedAmbiente && (
+        <Modal isOpen={isOpen} onClose={closeModal}>
+          <ModalOverlay />
+          <ModalContent bg="#1c1c1c" color="white">
+            <ModalHeader>{selectedAmbiente.nome}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <p>{selectedAmbiente.tipo}</p>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="orange" mr={3} onClick={closeModal}>
+                Fechar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 };
