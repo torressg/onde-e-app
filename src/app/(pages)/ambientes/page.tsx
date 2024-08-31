@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from 'next/image';
 import BurgerMenu from "@/app/components/BurgerMenu";
 import {
   IconButton,
@@ -19,6 +20,10 @@ import {
 } from "@chakra-ui/react";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
+interface Ambiente {
+  nome: string;
+  tipo: string;
+}
 const sala1 = {
   nome: "Sala 3",
   tipo: "Sala de Aula",
@@ -31,9 +36,9 @@ const sala2 = {
 
 const AmbientePage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedAmbiente, setSelectedAmbiente] = useState(null);
+  const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(null);
 
-  const openModal = (ambiente) => {
+  const openModal = (ambiente: Ambiente) => {
     setSelectedAmbiente(ambiente);
     setIsOpen(true);
   };
@@ -88,20 +93,40 @@ const AmbientePage = () => {
       </div>
 
       {selectedAmbiente && (
-        <Modal isOpen={isOpen} onClose={closeModal}>
+        <Modal isOpen={isOpen} onClose={closeModal} isCentered>
           <ModalOverlay />
-          <ModalContent bg="#1c1c1c" color="white">
-            <ModalHeader>{selectedAmbiente.nome}</ModalHeader>
+          <ModalContent
+            bg="#1c1c1c"
+            color="white"
+            maxW="75%"
+            mx="auto"
+            borderRadius="md" // Arredonda as bordas do modal
+          >
+            <ModalHeader>{selectedAmbiente?.nome}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <p>{selectedAmbiente.tipo}</p>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button colorScheme="orange" mr={3} onClick={closeModal}>
-                Fechar
+              <p className="text-subtitulo">{selectedAmbiente?.tipo}</p>
+              <div className="flex justify-center mb-6">
+                <Image
+                  src="https://via.placeholder.com/200x200"
+                  alt="Imagem do ambiente"
+                  width={200}
+                  height={200}
+                  className="rounded-md object-cover"
+                  style={{ borderRadius: "8px" }}
+                />
+              </div>
+              <Button
+                width="100%"
+                bg="#F8A801"
+                color="#1c1c1c"
+                _hover={{ bg: "#F78900" }}
+                borderRadius="md"
+              // onClick={handleGoClick} // Função que você deseja executar ao clicar no botão "Ir!"
+              >
+                Ir!
               </Button>
-            </ModalFooter>
+            </ModalBody>
           </ModalContent>
         </Modal>
       )}
