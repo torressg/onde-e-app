@@ -55,6 +55,7 @@ const SearchBar: React.FC<{
         boxShadow="0 4px 10px rgba(0, 0, 0, 0.3)"
         pl="3rem"
         className="w-80 h-12"
+        focusBorderColor="#F8A801"
       />
       {inputValue && (
         <InputRightElement

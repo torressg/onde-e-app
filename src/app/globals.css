@@ -31,3 +31,12 @@ body {
     text-wrap: balance;
   }
 }
+
+input[type="search"]::-webkit-search-cancel-button {
+  visibility: hidden;
+}
+
+.css-mo3gfn:focus-visible, .css-mo3gfn[data-focus-visible]  {
+  border-color: #F8A801;
+  box-shadow: 0 0 0 1px #F8A801;
+}
