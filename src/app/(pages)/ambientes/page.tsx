@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from 'next/image';
 import BurgerMenu from "@/app/components/BurgerMenu";
 import {
@@ -19,24 +19,31 @@ import {
   Button,
 } from "@chakra-ui/react";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import AmbienteCard from "./AmbienteCard";
+import { fetchAmbientes } from "@/services/dbAmbientes";
 
 interface Ambiente {
   nome: string;
-  tipo: string;
+  tipo_ambiente: string;
 }
-const sala1 = {
-  nome: "Sala 3",
-  tipo: "Sala de Aula",
-};
 
-const sala2 = {
-  nome: "Sala 4",
-  tipo: "Sala de Aula",
-};
-
-const AmbientePage = () => {
+const AmbientesPage: React.FC = () => {
+  const [ambientes, setAmbientes] = useState<Ambiente[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(null);
+
+  useEffect(() => {
+    const loadAmbientes = async () => {
+      try {
+        const data = await fetchAmbientes();
+        setAmbientes(data);
+      } catch (error) {
+        console.error('Erro ao carregar ambientes:', error);
+      }
+    };
+
+    loadAmbientes();
+  }, []);
 
   const openModal = (ambiente: Ambiente) => {
     setSelectedAmbiente(ambiente);
@@ -47,8 +54,6 @@ const AmbientePage = () => {
     setIsOpen(false);
     setSelectedAmbiente(null);
   };
-
-  let ambientes = [sala1, sala2];
 
   return (
     <>
@@ -80,14 +85,12 @@ const AmbientePage = () => {
         <hr className="text-laranja py-5" />
         <div className="grid justify-center space-y-5">
           {ambientes.map((ambiente, index) => (
-            <div
+            <AmbienteCard
               key={index}
-              className="bg-cinza w-80 h-14 rounded-2xl drop-shadow-md cursor-pointer"
+              nome={ambiente.nome}
+              tipo={ambiente.tipo_ambiente}
               onClick={() => openModal(ambiente)}
-            >
-              <h2 className="px-5 pt-1 text-base">{ambiente.nome}</h2>
-              <p className="px-5 text-xs text-subtitulo">{ambiente.tipo}</p>
-            </div>
+            />
           ))}
         </div>
       </div>
@@ -100,33 +103,17 @@ const AmbientePage = () => {
             color="white"
             maxW="75%"
             mx="auto"
-            borderRadius="md" // Arredonda as bordas do modal
+            borderRadius="md"
           >
-            <ModalHeader>{selectedAmbiente?.nome}</ModalHeader>
-            <ModalCloseButton />
+            <ModalHeader>{selectedAmbiente.nome}</ModalHeader>
             <ModalBody>
-              <p className="text-subtitulo">{selectedAmbiente?.tipo}</p>
-              <div className="flex justify-center mb-6">
-                <Image
-                  src="https://via.placeholder.com/200x200"
-                  alt="Imagem do ambiente"
-                  width={200}
-                  height={200}
-                  className="rounded-md object-cover"
-                  style={{ borderRadius: "8px" }}
-                />
-              </div>
-              <Button
-                width="100%"
-                bg="#F8A801"
-                color="#1c1c1c"
-                _hover={{ bg: "#F78900" }}
-                borderRadius="md"
-              // onClick={handleGoClick} // Função que você deseja executar ao clicar no botão "Ir!"
-              >
-                Ir!
-              </Button>
+              <p>{selectedAmbiente.tipo_ambiente}</p>
             </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="orange" mr={3} onClick={closeModal}>
+                Fechar
+              </Button>
+            </ModalFooter>
           </ModalContent>
         </Modal>
       )}
@@ -134,4 +121,4 @@ const AmbientePage = () => {
   );
 };
 
-export default AmbientePage;
+export default AmbientesPage;
