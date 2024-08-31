@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const API_URL = 'https://parseapi.back4app.com/Classes/ambientes';
-const APP_ID = 'qjpu9raG0VLMuGLhjGEzIipAyQKSPX72kzkNuoLY';
-const API_KEY = 'QWzvp6tmC6YbL7AcfhjVkp5QWSeS4UsXTgscSpHX';
+const APP_ID = '';
+const API_KEY = '';
 
 export const fetchAmbientes = async () => {
     try {
