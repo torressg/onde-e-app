@@ -10,7 +10,7 @@ const Contato = () => {
             <BurgerMenu />
           </div>
           <div className="mt-16 px-4 pb-4 inline-flex font-bold justify-between w-full">
-            <h2 className="text-2xl">Contato</h2>
+            <h2 className="text-2xl text-branco">Contato</h2>
           </div>
         </header>
         <hr className="text-laranja py-5" />

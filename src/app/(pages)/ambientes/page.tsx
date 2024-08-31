@@ -30,7 +30,7 @@ const AmbientePage = () => {
             <BurgerMenu />
           </div>
           <div className="mt-16 px-4 pb-4 inline-flex font-bold justify-between w-full">
-            <h2 className="text-2xl">Ambientes</h2>
+            <h2 className="text-2xl text-branco">Ambientes</h2>
             <Menu>
               <MenuButton
                 as={IconButton}
@@ -42,9 +42,9 @@ const AmbientePage = () => {
                 height={"32px"}
               />
               <MenuList background={"#1c1c1c"} borderColor={"#F8A801"}>
-                <MenuItem background={"#1c1c1c"}>Salas</MenuItem>
-                <MenuItem background={"#1c1c1c"}>Laboratórios</MenuItem>
-                <MenuItem background={"#1c1c1c"}>Auditórios</MenuItem>
+                <MenuItem color="white" background={"#1c1c1c"}>Salas</MenuItem>
+                <MenuItem color="white" background={"#1c1c1c"}>Laboratórios</MenuItem>
+                <MenuItem color="white" background={"#1c1c1c"}>Auditórios</MenuItem>
               </MenuList>
             </Menu>
           </div>
@@ -53,7 +53,7 @@ const AmbientePage = () => {
         <div className="grid justify-center space-y-5">
           {ambientes.map((ambiente, index) => (
             <div key={index} className="bg-cinza w-80 h-14 rounded-2xl drop-shadow-md ">
-              <h2 className="px-5 pt-1 text-base">{ambiente.nome}</h2>
+              <h2 className="px-5 pt-1 text-base text-branco">{ambiente.nome}</h2>
               <p className="px-5 text-xs text-subtitulo">{ambiente.tipo}</p>
             </div>
           ))}

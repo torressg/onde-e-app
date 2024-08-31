@@ -56,6 +56,8 @@ const SearchBar: React.FC<{
         pl="3rem"
         className="w-80 h-12"
         focusBorderColor="#F8A801"
+        _placeholder={{ color: "#474747" }}
+        color="white"
       />
       {inputValue && (
         <InputRightElement

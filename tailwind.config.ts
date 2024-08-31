@@ -19,7 +19,8 @@ const config: Config = {
       laranja: "#F8A801",
       cinza: "#1d1d1d",
       cinzaEscuro: "#1c1c1c",
-      subtitulo: "#474747"
+      subtitulo: "#474747",
+      branco:'#ffff'
     },
   },
   plugins: [],
