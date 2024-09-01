@@ -110,7 +110,7 @@ const AmbientesPage: React.FC = () => {
           </div>
         </header>
         <hr className="text-laranja py-5" />
-        <div className="grid justify-center space-y-5">
+        <div className="grid justify-center space-y-5 pb-10">
           {ambientes
             .filter((ambiente) => !filtro || ambiente.tipo_ambiente === filtro)
             .sort((a, b) =>
