@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 import BurgerMenu from "@/app/components/BurgerMenu";
 import {
   IconButton,
@@ -29,16 +29,22 @@ interface Ambiente {
 
 const AmbientesPage: React.FC = () => {
   const [ambientes, setAmbientes] = useState<Ambiente[]>([]);
+  const [filtro, setFiltro] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(null);
+  const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(
+    null
+  );
 
   useEffect(() => {
     const loadAmbientes = async () => {
       try {
         const data = await fetchAmbientes();
-        setAmbientes(data);
+        const verifyData = data.filter(
+          (i: any) => i.nome !== "NADA" && i.nome.trim() !== ""
+        );
+        setAmbientes(verifyData);
       } catch (error) {
-        console.error('Erro ao carregar ambientes:', error);
+        console.error("Erro ao carregar ambientes:", error);
       }
     };
 
@@ -75,23 +81,49 @@ const AmbientesPage: React.FC = () => {
                 height={"32px"}
               />
               <MenuList background={"#1c1c1c"} borderColor={"#F8A801"}>
-                <MenuItem background={"#1c1c1c"}>Salas</MenuItem>
-                <MenuItem background={"#1c1c1c"}>Laboratórios</MenuItem>
-                <MenuItem background={"#1c1c1c"}>Auditórios</MenuItem>
+                <MenuItem
+                  background={"#1c1c1c"}
+                  onClick={() => setFiltro("Sala de Aula")}
+                >
+                  Salas
+                </MenuItem>
+                <MenuItem
+                  background={"#1c1c1c"}
+                  onClick={() => setFiltro("Laboratório")}
+                >
+                  Laboratórios
+                </MenuItem>
+                <MenuItem
+                  background={"#1c1c1c"}
+                  onClick={() => setFiltro("Ambiente Comum")}
+                >
+                  Ambiente Comum
+                </MenuItem>
+                <MenuItem
+                  background={"#1c1c1c"}
+                  onClick={() => setFiltro(null)}
+                >
+                  Todos
+                </MenuItem>
               </MenuList>
             </Menu>
           </div>
         </header>
         <hr className="text-laranja py-5" />
         <div className="grid justify-center space-y-5">
-          {ambientes.map((ambiente, index) => (
-            <AmbienteCard
-              key={index}
-              nome={ambiente.nome}
-              tipo={ambiente.tipo_ambiente}
-              onClick={() => openModal(ambiente)}
-            />
-          ))}
+          {ambientes
+            .filter((ambiente) => !filtro || ambiente.tipo_ambiente === filtro)
+            .sort((a, b) =>
+              a.nome.localeCompare(b.nome, undefined, { numeric: true })
+            )
+            .map((ambiente, index) => (
+              <AmbienteCard
+                key={index}
+                nome={ambiente.nome}
+                tipo={ambiente.tipo_ambiente}
+                onClick={() => openModal(ambiente)}
+              />
+            ))}
         </div>
       </div>
 
@@ -110,7 +142,13 @@ const AmbientesPage: React.FC = () => {
               <p>{selectedAmbiente.tipo_ambiente}</p>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="orange" mr={3} onClick={closeModal}>
+              <Button
+                bg="#F8A801"
+                color="white"
+                _hover={{ bg: "#F78900" }}
+                mr={3}
+                onClick={closeModal}
+              >
                 Fechar
               </Button>
             </ModalFooter>
