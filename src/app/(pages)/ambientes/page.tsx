@@ -136,22 +136,36 @@ const AmbientesPage: React.FC = () => {
             maxW="75%"
             mx="auto"
             borderRadius="md"
+            p={4}
           >
-            <ModalHeader>{selectedAmbiente.nome}</ModalHeader>
+            <ModalHeader fontSize="lg" fontWeight="bold">
+              {selectedAmbiente?.nome}
+              <p className="text-subtitulo text-sm font-normal mt-1">
+                {selectedAmbiente?.tipo_ambiente}
+              </p>
+            </ModalHeader>
+            <ModalCloseButton />
             <ModalBody>
-              <p>{selectedAmbiente.tipo_ambiente}</p>
-            </ModalBody>
-            <ModalFooter>
+              <div className="flex justify-center mb-6">
+                <Image
+                  src="https://via.placeholder.com/200x200"
+                  alt="Imagem do ambiente"
+                  width={200}
+                  height={200}
+                  className="rounded-md object-cover"
+                  style={{ borderRadius: "8px" }}
+                />
+              </div>
               <Button
+                width="100%"
                 bg="#FCA311"
-                color="white"
+                color="#1c1c1c"
                 _hover={{ bg: "#F78900" }}
-                mr={3}
-                onClick={closeModal}
+                borderRadius="md"
               >
-                Fechar
+                Ir!
               </Button>
-            </ModalFooter>
+            </ModalBody>
           </ModalContent>
         </Modal>
       )}
