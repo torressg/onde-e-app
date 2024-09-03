@@ -74,13 +74,13 @@ const AmbientesPage: React.FC = () => {
               <MenuButton
                 as={IconButton}
                 icon={<FilterAltOutlinedIcon />}
-                color={"#F8A801"}
+                color={"#FCA311"}
                 background={"transparent"}
                 _hover={{ bg: "transparent", color: "#F78900" }}
                 width={"32px"}
                 height={"32px"}
               />
-              <MenuList background={"#1c1c1c"} borderColor={"#F8A801"}>
+              <MenuList background={"#1c1c1c"} borderColor={"#FCA311"}>
                 <MenuItem
                   background={"#1c1c1c"}
                   onClick={() => setFiltro("Sala de Aula")}
@@ -143,7 +143,7 @@ const AmbientesPage: React.FC = () => {
             </ModalBody>
             <ModalFooter>
               <Button
-                bg="#F8A801"
+                bg="#FCA311"
                 color="white"
                 _hover={{ bg: "#F78900" }}
                 mr={3}
