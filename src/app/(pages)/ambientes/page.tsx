@@ -7,7 +7,6 @@ import {
   IconButton,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
   Modal,
   ModalOverlay,
@@ -17,6 +16,9 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  Checkbox,
+  CheckboxGroup,
+  VStack,
 } from "@chakra-ui/react";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AmbienteCard from "./AmbienteCard";
@@ -29,7 +31,8 @@ interface Ambiente {
 
 const AmbientesPage: React.FC = () => {
   const [ambientes, setAmbientes] = useState<Ambiente[]>([]);
-  const [filtro, setFiltro] = useState<string | null>(null);
+  const [filteredAmbientes, setFilteredAmbientes] = useState<Ambiente[]>([]);
+  const [filtrosSelecionados, setFiltrosSelecionados] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(
     null
@@ -43,6 +46,7 @@ const AmbientesPage: React.FC = () => {
           (i: any) => i.nome !== "NADA" && i.nome.trim() !== ""
         );
         setAmbientes(verifyData);
+        setFilteredAmbientes(verifyData);
       } catch (error) {
         console.error("Erro ao carregar ambientes:", error);
       }
@@ -61,6 +65,23 @@ const AmbientesPage: React.FC = () => {
     setSelectedAmbiente(null);
   };
 
+  const aplicarFiltro = (onClose: () => void) => {
+    if (filtrosSelecionados.length === 0) {
+      setFilteredAmbientes(ambientes);
+    } else {
+      const ambientesFiltrados = ambientes.filter((ambiente) =>
+        filtrosSelecionados.includes(ambiente.tipo_ambiente)
+      );
+      setFilteredAmbientes(ambientesFiltrados);
+    }
+    onClose();
+  };
+
+  const redefinirFiltro = () => {
+    setFiltrosSelecionados([]);
+    setFilteredAmbientes(ambientes);
+  };
+
   return (
     <>
       <div className="bg-ambientBG min-h-screen">
@@ -71,48 +92,67 @@ const AmbientesPage: React.FC = () => {
           <div className="mt-16 px-4 pb-4 inline-flex font-bold justify-between w-full">
             <h2 className="text-2xl">Ambientes</h2>
             <Menu>
-              <MenuButton
-                as={IconButton}
-                icon={<FilterAltOutlinedIcon />}
-                color={"#FCA311"}
-                background={"transparent"}
-                _hover={{ bg: "transparent", color: "#F78900" }}
-                width={"32px"}
-                height={"32px"}
-              />
-              <MenuList background={"#1c1c1c"} borderColor={"#FCA311"}>
-                <MenuItem
-                  background={"#1c1c1c"}
-                  onClick={() => setFiltro("Sala de Aula")}
-                >
-                  Salas
-                </MenuItem>
-                <MenuItem
-                  background={"#1c1c1c"}
-                  onClick={() => setFiltro("Laboratório")}
-                >
-                  Laboratórios
-                </MenuItem>
-                <MenuItem
-                  background={"#1c1c1c"}
-                  onClick={() => setFiltro("Ambiente Comum")}
-                >
-                  Ambiente Comum
-                </MenuItem>
-                <MenuItem
-                  background={"#1c1c1c"}
-                  onClick={() => setFiltro(null)}
-                >
-                  Todos
-                </MenuItem>
-              </MenuList>
+              {({ onClose }) => (
+                <>
+                  <MenuButton
+                    as={IconButton}
+                    icon={<FilterAltOutlinedIcon />}
+                    color={"#FCA311"}
+                    background={"#1c1c1c"}
+                    _hover={{ bg: "#F78900", color: "#1c1c1c" }}
+                    _active={{ bg: "#FCA311", color: "#1c1c1c" }}
+                    width={"32px"}
+                    height={"32px"}
+                  />
+                  <MenuList background={"#1c1c1c"} borderColor={"#FCA311"}>
+                    <VStack align="start" px={4} py={2}>
+                      <h3 className="text-lg font-bold mb-2">Filtrar por:</h3>
+                      <CheckboxGroup
+                        value={filtrosSelecionados}
+                        onChange={(val) => setFiltrosSelecionados(val as string[])}
+                      >
+                        <Checkbox value="Sala de Aula" colorScheme="customOrange">
+                          Salas
+                        </Checkbox>
+                        <Checkbox value="Laboratório" colorScheme="customOrange">
+                          Laboratórios
+                        </Checkbox>
+                        <Checkbox value="Ambiente Comum" colorScheme="customOrange">
+                          Ambiente Comum
+                        </Checkbox>
+                      </CheckboxGroup>
+                      <Button
+                        onClick={() => aplicarFiltro(onClose)}
+                        bg="#FCA311"
+                        color="black"
+                        size="sm"
+                        width="100%"
+                        mt={2}
+                        _hover={{ bg: "#F78900" }}
+                      >
+                        Aplicar Filtro
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          redefinirFiltro();
+                          onClose();
+                        }}
+                        colorScheme="gray"
+                        size="sm"
+                        width="100%"
+                      >
+                        Redefinir Filtro
+                      </Button>
+                    </VStack>
+                  </MenuList>
+                </>
+              )}
             </Menu>
           </div>
         </header>
         <hr className="text-laranja py-5" />
         <div className="grid justify-center space-y-5 pb-10">
-          {ambientes
-            .filter((ambiente) => !filtro || ambiente.tipo_ambiente === filtro)
+          {filteredAmbientes
             .sort((a, b) =>
               a.nome.localeCompare(b.nome, undefined, { numeric: true })
             )
