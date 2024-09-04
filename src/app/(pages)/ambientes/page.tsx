@@ -19,6 +19,7 @@ import {
   Checkbox,
   CheckboxGroup,
   VStack,
+  Spinner,
 } from "@chakra-ui/react";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AmbienteCard from "./AmbienteCard";
@@ -34,21 +35,24 @@ const AmbientesPage: React.FC = () => {
   const [filteredAmbientes, setFilteredAmbientes] = useState<Ambiente[]>([]);
   const [filtrosSelecionados, setFiltrosSelecionados] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(
-    null
-  );
+  const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(null);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const loadAmbientes = async () => {
+      setLoading(true); // Ativa o loading enquanto os dados são carregados
       try {
         const data = await fetchAmbientes();
         const verifyData = data.filter(
           (i: any) => i.nome !== "NADA" && i.nome.trim() !== ""
         );
         setAmbientes(verifyData);
-        setFilteredAmbientes(verifyData);
+        setFilteredAmbientes(verifyData); // Armazena todos os ambientes
       } catch (error) {
         console.error("Erro ao carregar ambientes:", error);
+      } finally {
+        setLoading(false); // Desativa o loading após o carregamento
       }
     };
 
@@ -152,18 +156,24 @@ const AmbientesPage: React.FC = () => {
         </header>
         <hr className="text-laranja py-5" />
         <div className="grid justify-center space-y-5 pb-10">
-          {filteredAmbientes
-            .sort((a, b) =>
-              a.nome.localeCompare(b.nome, undefined, { numeric: true })
-            )
-            .map((ambiente, index) => (
-              <AmbienteCard
-                key={index}
-                nome={ambiente.nome}
-                tipo={ambiente.tipo_ambiente}
-                onClick={() => openModal(ambiente)}
-              />
-            ))}
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <Spinner size="xl" color="#FCA311" />
+            </div>
+          ) : (
+            filteredAmbientes
+              .sort((a, b) =>
+                a.nome.localeCompare(b.nome, undefined, { numeric: true })
+              )
+              .map((ambiente, index) => (
+                <AmbienteCard
+                  key={index}
+                  nome={ambiente.nome}
+                  tipo={ambiente.tipo_ambiente}
+                  onClick={() => openModal(ambiente)}
+                />
+              ))
+          )}
         </div>
       </div>
 
