@@ -75,7 +75,7 @@ const BurgerMenu = () => {
             fontWeight="semibold"
             p="4"
           >
-            Contato
+            Suporte ao usuário
           </Link>
           <Button
             onClick={toggleMenu}
