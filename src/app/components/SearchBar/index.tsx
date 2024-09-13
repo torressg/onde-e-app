@@ -1,21 +1,58 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LocalStorageService } from "../../../services/LocalStorageService";
 import {
+  Box,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
 import { SearchIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { fetchAmbientes } from "@/services/dbAmbientes";
+import AutoCompleteList from "./AutoCompleteList";
 
 const SearchBar: React.FC<{
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ inputValue, setInputValue }) => {
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAmbientes = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchAmbientes();
+        const verifyData = data.filter(
+          (i: any) => i.nome !== "NADA" && i.nome.trim() !== ""
+        );
+        const names = verifyData.map((ambiente: any) => ambiente.nome); // Extrai os nomes dos ambientes
+        setSuggestionsList(names);
+      } catch (error) {
+        console.error("Erro ao carregar ambientes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAmbientes();
+  }, []);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    const value = event.target.value;
+    setInputValue(value);
+
+    if (value) {
+      const filtered = suggestionsList.filter((suggestion) =>
+        suggestion.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
+    }
   };
 
   const handleClickSearchToStorageLocal = () => {
@@ -34,46 +71,50 @@ const SearchBar: React.FC<{
     }
   };
 
+  const handleSuggestionClick = (suggestion: string) => {
+    setInputValue(suggestion);
+    setFilteredSuggestions([]); // Remove sugestões após o clique
+  };
+
   return (
-    <InputGroup size="md" className="w-80">
-      <InputLeftElement
-        pointerEvents="none"
-        height="100%"
-        display="flex"
-      >
-        <SearchIcon color="#F8A801" w="2rem" h="2rem" pl="0.813rem" />
-      </InputLeftElement>
-      <Input
-        placeholder="Para onde?"
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        type="search"
-        enterKeyHint="go" 
-        bg="#1c1c1c"
-        borderRadius="30px"
-        boxShadow="0 4px 10px rgba(0, 0, 0, 0.3)"
-        pl="3rem"
-        className="w-80 h-12"
-        focusBorderColor="#F8A801"
-        _placeholder={{ color: "#474747" }}
-        color="white"
-      />
-      {inputValue && (
-        <InputRightElement
-          width="3rem"
-          height="100%"
-          display="flex"
-        >
-          <div
-            onClick={handleClickSearchToStorageLocal}
-            style={{ cursor: "pointer" }}
-          >
-            <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
-          </div>
-        </InputRightElement>
+    <Box position="relative" width="100%"> {/* Wrapper com posição relativa */}
+      {/* Renderiza as sugestões */}
+      {filteredSuggestions.length > 0 && (
+        <AutoCompleteList
+          suggestions={filteredSuggestions}
+          onSelect={handleSuggestionClick}
+        />
       )}
-    </InputGroup>
+
+      <InputGroup size="md" className="w-80">
+        <InputLeftElement pointerEvents="none" height="100%" display="flex">
+          <SearchIcon color="#F8A801" w="2rem" h="2rem" pl="0.813rem" />
+        </InputLeftElement>
+        <Input
+          placeholder="Para onde?"
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={(e) => e.key === "Enter" && handleClickSearchToStorageLocal()}
+          type="search"
+          enterKeyHint="go"
+          bg="#1c1c1c"
+          borderRadius="30px"
+          boxShadow="0 4px 10px rgba(0, 0, 0, 0.3)"
+          pl="3rem"
+          className="w-80 h-12"
+          focusBorderColor="#F8A801"
+          _placeholder={{ color: "#474747" }}
+          color="white"
+        />
+        {inputValue && (
+          <InputRightElement width="3rem" height="100%" display="flex">
+            <div onClick={handleClickSearchToStorageLocal} style={{ cursor: "pointer" }}>
+              <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
+            </div>
+          </InputRightElement>
+        )}
+      </InputGroup>
+    </Box>
   );
 };
 
