@@ -12,6 +12,17 @@ const AutoCompleteList: React.FC<AutoCompleteListProps> = ({
   onSelect,
   className,
 }) => {
+  const suggestionsList = suggestions.sort((a, b) => {
+    const sortedA = parseFloat(a);
+    const sortedB = parseFloat(b);
+
+    if (!isNaN(sortedA) && !isNaN(sortedB)) {
+      return sortedA - sortedB;
+    }
+
+    return a.localeCompare(b, undefined, { numeric: true });
+  });
+
   return (
     <Box
       bg="#1c1c1c"
@@ -21,14 +32,14 @@ const AutoCompleteList: React.FC<AutoCompleteListProps> = ({
       position="absolute"
       bottom="48px"
       zIndex="10"
-      width="100%" 
+      width="100%"
       boxShadow="0 -4px 10px rgba(0, 0, 0, 0.3)"
       className={`${className}`}
       border="1.5px solid"
       borderColor="#F8A801"
     >
       <List>
-        {suggestions.map((suggestion, index) => (
+        {suggestionsList.map((suggestion, index) => (
           <ListItem
             key={index}
             p="12px 20px"
