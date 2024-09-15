@@ -77,16 +77,8 @@ const SearchBar: React.FC<{
   };
 
   return (
-    <Box position="relative" width="100%"> {/* Wrapper com posição relativa */}
-      {/* Renderiza as sugestões */}
-      {filteredSuggestions.length > 0 && (
-        <AutoCompleteList
-          suggestions={filteredSuggestions}
-          onSelect={handleSuggestionClick}
-        />
-      )}
-
-      <InputGroup size="md" className="w-80">
+    <Box position="relative" width="100%">
+      <InputGroup size="md" className="w-80" style={{ zIndex: 1 }} >
         <InputLeftElement pointerEvents="none" height="100%" display="flex">
           <SearchIcon color="#F8A801" w="2rem" h="2rem" pl="0.813rem" />
         </InputLeftElement>
@@ -94,7 +86,7 @@ const SearchBar: React.FC<{
           placeholder="Para onde?"
           value={inputValue}
           onChange={handleInputChange}
-          onKeyDown={(e) => e.key === "Enter" && handleClickSearchToStorageLocal()}
+          onKeyDown={handleKeyDown}
           type="search"
           enterKeyHint="go"
           bg="#1c1c1c"
@@ -102,18 +94,32 @@ const SearchBar: React.FC<{
           boxShadow="0 4px 10px rgba(0, 0, 0, 0.3)"
           pl="3rem"
           className="w-80 h-12"
+          border="1.5px solid"
+          borderColor="#F8A801"
           focusBorderColor="#F8A801"
           _placeholder={{ color: "#474747" }}
           color="white"
         />
         {inputValue && (
           <InputRightElement width="3rem" height="100%" display="flex">
-            <div onClick={handleClickSearchToStorageLocal} style={{ cursor: "pointer" }}>
+            <div
+              onClick={handleClickSearchToStorageLocal}
+              style={{ cursor: "pointer" }}
+            >
               <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
             </div>
           </InputRightElement>
         )}
       </InputGroup>
+      {filteredSuggestions.length > 0 && (
+        <div className="flex justify-center">
+          <AutoCompleteList
+            suggestions={filteredSuggestions}
+            onSelect={handleSuggestionClick}
+            className="w-4/5"
+          />
+        </div>
+      )}
     </Box>
   );
 };
