@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  IconButton,
-  Link,
-} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Flex, IconButton, Link } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPathname, setCurrentPathname] = useState("")
 
+  useEffect(() => {
+    if(window)
+      setCurrentPathname(window.location.pathname)
+  }, [])
+
+  const isActive = (pathname: string) => currentPathname === pathname;
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -50,7 +51,7 @@ const BurgerMenu = () => {
           <Link
             as={NextLink}
             href="/"
-            color="#F8A801"
+            color={isActive("/") ? "fff" : "#F8A801"}
             fontSize="2xl"
             fontWeight="semibold"
             p="4"
@@ -60,7 +61,7 @@ const BurgerMenu = () => {
           <Link
             as={NextLink}
             href="/ambientes"
-            color="#F8A801"
+            color={isActive("/ambientes") ? "fff" : "#F8A801"}
             fontSize="2xl"
             fontWeight="semibold"
             p="4"
@@ -70,7 +71,7 @@ const BurgerMenu = () => {
           <Link
             as={NextLink}
             href="/contato"
-            color="#F8A801"
+            color={isActive("/contato") ? "fff" : "#F8A801"}
             fontSize="2xl"
             fontWeight="semibold"
             p="4"
