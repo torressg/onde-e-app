@@ -1,8 +1,5 @@
 import axios from 'axios';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const APP_ID = process.env.NEXT_PUBLIC_APP_ID;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+import { API_KEY, API_URL, APP_ID } from '@/shared/Config';
 
 export const fetchAmbientes = async () => {
     try {
