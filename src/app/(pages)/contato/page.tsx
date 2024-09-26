@@ -10,6 +10,7 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useState } from "react";
 
 const Contato = () => {
@@ -18,23 +19,49 @@ const Contato = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true)
 
     if (!name || !email || !subject || !message) {
       setError("Por favor, preencha todos os campos.");
       return;
     }
 
-    setError("");
+    const formData = {
+      name,
+      email,
+      subject,
+      message,
+      _cc: "guilherme.vanderlei@uscsonline.com.br,guilherme.tofanelli@uscsonline.com.br,rafael.romero@uscsonline.com.br,lucas.arrabal@uscsonline.com.br", // Adiciona o campo de CC
+      _captcha: "false"
+    };
 
-    alert("Email enviado com sucesso!");
-
-    setName("");
-    setEmail("");
-    setSubject("");
-    setMessage("");
+    try {
+      const response = await axios.post("https://formsubmit.co/gianluca.paschoalotti@uscsonline.com.br", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (response) {
+        alert("Formulário enviado com sucesso!");
+        setName("");
+        setEmail("");
+        setSubject("");
+        setMessage("");
+      } else {
+        alert("Erro ao enviar o formulário.");
+        setError("Erro ao enviar o formulário.")
+      }
+    } catch (error) {
+      console.error("Erro:", error);
+      setError("Não foi possível encaminhar o email.")
+    } finally {
+      setIsLoading(false)
+    }
   };
 
   return (
@@ -50,7 +77,7 @@ const Contato = () => {
         </header>
         <hr className="py-5 border-laranja" />
         <div className="grid justify-center space-y-5 pb-10">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} action="https://formsubmit.co/gianluca.paschoalotti@uscsonline.com.br" method="POST">
             <VStack color="white" spacing={4}>
               <FormControl id="name" isRequired>
                 <FormLabel>Nome</FormLabel>
@@ -97,7 +124,10 @@ const Contato = () => {
                 />
               </FormControl>
 
-              <Button bg={"#F8A801"} type="submit">
+              <Button bg={"#F8A801"} type="submit"
+                isLoading={isLoading}
+                loadingText="Enviando..." 
+              >
                 Enviar
               </Button>
             </VStack>
