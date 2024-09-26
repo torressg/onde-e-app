@@ -78,6 +78,16 @@ const BurgerMenu = () => {
           >
             Suporte ao usuário
           </Link>
+          <Link
+            as={NextLink}
+            href="/ajuda"
+            color={isActive("/ajuda") ? "fff" : "#F8A801"}
+            fontSize="2xl"
+            fontWeight="semibold"
+            p="4"
+          >
+            Ajuda de uso
+          </Link>
           <Button
             onClick={toggleMenu}
             color="#F8A801"
