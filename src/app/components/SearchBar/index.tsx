@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LocalStorageService } from "../../../services/LocalStorageService";
 import {
   Box,
@@ -21,8 +21,8 @@ const SearchBar: React.FC<{
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [startNode, setStartNode] = useState(''); // Novo estado para o ponto de início
-  const [endNode, setEndNode] = useState('');
+  const [startNode, setStartNode] = useState("Entrada"); // Valor fixo para o ponto inicial
+  const [endNode, setEndNode] = useState(""); // Novo estado para o ponto final/endNode
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -44,15 +44,23 @@ const SearchBar: React.FC<{
     loadAmbientes();
   }, []);
 
-  const handleSearchClick = () => {
+  // Função combinada para procurar a rota e salvar no localStorage
+  const handleCombinedClick = () => {
+    if (inputValue.trim()) {
+      // Adiciona o novo destino ao localStorage
+      LocalStorageService.setRecentDestination(inputValue.trim());
+      setInputValue(""); // Limpa o input após enviar
+      console.log("Search icon clicked and destination saved");
 
-    onSearch('Entrada', 'Sala 6'); // Chama a função de busca passada via props
-
+      // Chama a função de busca com startNode e endNode
+      onSearch(startNode, endNode);
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
+    setEndNode(value); // Define o valor do input como o endNode
 
     if (value) {
       const filtered = suggestionsList.filter((suggestion) =>
@@ -64,30 +72,22 @@ const SearchBar: React.FC<{
     }
   };
 
-  const handleClickSearchToStorageLocal = () => {
-    if (inputValue.trim()) {
-      // Adiciona o novo destino ao localStorage e garante o limite de 4 itens
-      LocalStorageService.setRecentDestination(inputValue.trim());
-      setInputValue(""); // Limpa o input após enviar
-      console.log("Search icon clicked and destination saved");
-    }
-  };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Evita o comportamento padrão do formulário
-      handleClickSearchToStorageLocal(); // Chama a função de envio ao pressionar Enter
+      handleCombinedClick(); // Chama a função combinada ao pressionar Enter
     }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
     setInputValue(suggestion);
+    setEndNode(suggestion); // Define a sugestão clicada como o endNode
     setFilteredSuggestions([]); // Remove sugestões após o clique
   };
 
   return (
     <Box position="relative" width="100%">
-      <InputGroup size="md" className="w-80" style={{ zIndex: 1 }} >
+      <InputGroup size="md" className="w-80" style={{ zIndex: 1 }}>
         <InputLeftElement pointerEvents="none" height="100%" display="flex">
           <SearchIcon color="#F8A801" w="2rem" h="2rem" pl="0.813rem" />
         </InputLeftElement>
@@ -112,7 +112,7 @@ const SearchBar: React.FC<{
         {inputValue && (
           <InputRightElement width="3rem" height="100%" display="flex">
             <div
-              onClick={handleSearchClick}
+              onClick={handleCombinedClick} // Aqui chama a função combinada
               style={{ cursor: "pointer" }}
             >
               <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
