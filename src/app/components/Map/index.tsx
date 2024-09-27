@@ -1,30 +1,27 @@
-'use client'
+'use client';
 
 import { useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { FeatureCollection, Geometry } from 'geojson';
 
-const FullScreenMap = () => {
-
+const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
     useEffect(() => {
         const mapInstance = new maplibregl.Map({
             container: 'map',
             style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-            center: [-46.57924457368841,-23.618155335655388], // Substitua pelas coordenadas específicas-23.618155335655388, -46.57924457368841
-            zoom: 12, // Ajuste o zoom para iniciar focado
+            center: [-46.57924457368841, -23.618155335655388], // Coordenadas iniciais
+            zoom: 18, // Ajuste o zoom inicial
             minZoom: 18,
             maxZoom: 20,
-            // bearing: 30, // Ângulo de rotação para alinhar o corredor
-            pitch: 20, // Inclinação para uma visão mais tridimensional
+            pitch: 20, // Inclinação para uma visão 3D
         });
 
         mapInstance.on('load', () => {
+            // Adiciona a camada de prédios (3D)
             mapInstance.addSource('geojson1', {
                 type: 'geojson',
                 data: '/data/uscsAmbientesMap.geojson'
             });
-
 
             mapInstance.addLayer({
                 id: 'geojson3d-layer',
@@ -35,10 +32,11 @@ const FullScreenMap = () => {
                     'fill-extrusion-color': '#F8A801',
                     'fill-extrusion-height': 5,
                     'fill-extrusion-base': 1,
-                    'fill-extrusion-opacity': 1
+                    'fill-extrusion-opacity': 1,
                 }
             });
 
+            // Adiciona a camada de circulação
             mapInstance.addSource('geojson2', {
                 type: 'geojson',
                 data: '/data/uscsCirculacaoMap.geojson'
@@ -51,58 +49,35 @@ const FullScreenMap = () => {
                 layout: {},
                 paint: {
                     'fill-color': '#888888',
-                    'fill-opacity': 1
+                    'fill-opacity': 1,
                 }
             }, 'geojson3d-layer');
 
-            const bounds = new maplibregl.LngLatBounds();
-
-            const extendBounds = (geometry: Geometry) => {
-                if (geometry.type === 'Polygon' || geometry.type === 'MultiPolygon') {
-                    const coords = geometry.coordinates as number[][][] | number[][][][];
-                    coords.flat(2).forEach(coord => {
-                        if (Array.isArray(coord) && coord.length === 2) {
-                            bounds.extend(coord as [number, number]);
-                        }
-                    });
-                }
-            };
-
-            fetch('/data/uscsAmbientesMap.geojson')
-                .then(response => response.json())
-                .then((geojson1: FeatureCollection<Geometry>) => {
-                    geojson1.features.forEach(feature => extendBounds(feature.geometry));
-
-                    fetch('/data/uscsCirculacaoMap.geojson')
-                        .then(response => response.json())
-                        .then((geojson2: FeatureCollection<Geometry>) => {
-                            geojson2.features.forEach(feature => extendBounds(feature.geometry));
-
-                            mapInstance.fitBounds(bounds, { padding: 20 });
-                        });
+            // Adicionar rota como linha no mapa
+            if (geoJson) {
+                mapInstance.addSource('route', {
+                    type: 'geojson',
+                    data: geoJson // O GeoJSON da rota
                 });
 
-            // Adiciona evento de clique com Popup
-            mapInstance.on('click', 'geojson3d-layer', (e) => {
-                if (e.features && e.features.length > 0) {
-                    const coordinates = e.features[0].geometry.type === "Point" ?
-                        (e.features[0].geometry.coordinates as [number, number]) :
-                        (e.lngLat.toArray() as [number, number]);
-
-                    const properties = e.features[0].properties;
-                    new maplibregl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(`
-                            <strong><h3 style="color: black;">${properties.Name || 'No Title'}</h3></strong>
-                            <p style="color: black;">${properties.TipoAmb || 'No Subtitle'}</p>
-                        `)
-                        .addTo(mapInstance);
-                }
-            });
+                mapInstance.addLayer({
+                    id: 'route-layer',
+                    type: 'line',
+                    source: 'route',
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round',
+                    },
+                    paint: {
+                        'line-color': '#ff0000', // Cor da linha
+                        'line-width': 4,
+                    }
+                });
+            }
         });
 
         return () => mapInstance.remove();
-    }, []);
+    }, [geoJson]); // Atualiza quando o geoJson muda
 
     return (
         <div>

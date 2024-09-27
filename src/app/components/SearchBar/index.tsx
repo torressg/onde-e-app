@@ -16,10 +16,13 @@ import AutoCompleteList from "./AutoCompleteList";
 const SearchBar: React.FC<{
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ inputValue, setInputValue }) => {
+  onSearch: (startNode: string, endNode: string) => void; // Nova prop para a função de busca
+}> = ({ inputValue, setInputValue, onSearch }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [startNode, setStartNode] = useState(''); // Novo estado para o ponto de início
+  const [endNode, setEndNode] = useState('');
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -40,6 +43,12 @@ const SearchBar: React.FC<{
 
     loadAmbientes();
   }, []);
+
+  const handleSearchClick = () => {
+
+    onSearch('Entrada', 'Sala 6'); // Chama a função de busca passada via props
+
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -103,7 +112,7 @@ const SearchBar: React.FC<{
         {inputValue && (
           <InputRightElement width="3rem" height="100%" display="flex">
             <div
-              onClick={handleClickSearchToStorageLocal}
+              onClick={handleSearchClick}
               style={{ cursor: "pointer" }}
             >
               <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
