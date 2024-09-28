@@ -7,15 +7,18 @@ import NextLink from "next/link";
 
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentPathname, setCurrentPathname] = useState("")
+  const [currentPathname, setCurrentPathname] = useState("");
 
   useEffect(() => {
-    if(window)
-      setCurrentPathname(window.location.pathname)
-  }, [])
+    if (window) setCurrentPathname(window.location.pathname);
+  }, []);
 
   const isActive = (pathname: string) => currentPathname === pathname;
-  const toggleMenu = () => {
+
+  const toggleMenu = (targetPathname?: any) => {
+    if (isActive(targetPathname)) {
+      setIsOpen(false);
+    }
     setIsOpen(!isOpen);
   };
 
@@ -50,6 +53,7 @@ const BurgerMenu = () => {
         >
           <Link
             as={NextLink}
+            onClick={() => toggleMenu("/")}
             href="/"
             color={isActive("/") ? "fff" : "#F8A801"}
             fontSize="2xl"
@@ -60,6 +64,7 @@ const BurgerMenu = () => {
           </Link>
           <Link
             as={NextLink}
+            onClick={() => toggleMenu("/ambientes")}
             href="/ambientes"
             color={isActive("/ambientes") ? "fff" : "#F8A801"}
             fontSize="2xl"
@@ -70,6 +75,7 @@ const BurgerMenu = () => {
           </Link>
           <Link
             as={NextLink}
+            onClick={() => toggleMenu("/contato")}
             href="/contato"
             color={isActive("/contato") ? "fff" : "#F8A801"}
             fontSize="2xl"
@@ -80,6 +86,7 @@ const BurgerMenu = () => {
           </Link>
           <Link
             as={NextLink}
+            onClick={() => toggleMenu("/ajuda")}
             href="/ajuda"
             color={isActive("/ajuda") ? "fff" : "#F8A801"}
             fontSize="2xl"
@@ -89,7 +96,7 @@ const BurgerMenu = () => {
             Ajuda de uso
           </Link>
           <Button
-            onClick={toggleMenu}
+            onClick={() => toggleMenu()}
             color="#F8A801"
             fontSize="2xl"
             fontWeight="semibold"
