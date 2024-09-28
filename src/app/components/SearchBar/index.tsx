@@ -20,6 +20,9 @@ const SearchBar: React.FC<{
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const removeAutoComplete = () => {
+    setFilteredSuggestions([]);
+  };
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -68,6 +71,7 @@ const SearchBar: React.FC<{
     if (event.key === "Enter") {
       event.preventDefault(); // Evita o comportamento padrão do formulário
       handleClickSearchToStorageLocal(); // Chama a função de envio ao pressionar Enter
+      setFilteredSuggestions([]);
     }
   };
 
@@ -78,7 +82,7 @@ const SearchBar: React.FC<{
 
   return (
     <Box position="relative" width="100%">
-      <InputGroup size="md" className="w-80" style={{ zIndex: 1 }} >
+      <InputGroup size="md" className="w-80" style={{ zIndex: 1 }}>
         <InputLeftElement pointerEvents="none" height="100%" display="flex">
           <SearchIcon color="#F8A801" w="2rem" h="2rem" pl="0.813rem" />
         </InputLeftElement>
@@ -87,6 +91,7 @@ const SearchBar: React.FC<{
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
+          onBlur={removeAutoComplete}
           type="search"
           enterKeyHint="go"
           bg="#1c1c1c"
