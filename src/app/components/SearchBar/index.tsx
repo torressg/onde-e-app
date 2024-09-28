@@ -53,7 +53,7 @@ const SearchBar: React.FC<{
       // Validação se o valor existe na lista
       toast({
         title: "Ambiente não encontrado.",
-        description: `O ambiente "${inputValue}" não existe na lista.`,
+        description: `O ambiente "${inputValue}" não existe.`,
         status: "error",
         duration: 5000,
         isClosable: true,
