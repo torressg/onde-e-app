@@ -8,6 +8,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  useToast, // Importação do toast
 } from "@chakra-ui/react";
 import { SearchIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { fetchAmbientes } from "@/services/dbAmbientes";
@@ -16,13 +17,15 @@ import AutoCompleteList from "./AutoCompleteList";
 const SearchBar: React.FC<{
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
-  onSearch: (startNode: string, endNode: string) => void; // Nova prop para a função de busca
+  onSearch: (startNode: string, endNode: string) => void;
 }> = ({ inputValue, setInputValue, onSearch }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [startNode, setStartNode] = useState("Entrada"); // Valor fixo para o ponto inicial
   const [endNode, setEndNode] = useState(""); // Novo estado para o ponto final/endNode
+
+  const toast = useToast(); // Criação do toast
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -46,6 +49,19 @@ const SearchBar: React.FC<{
 
   // Função combinada para procurar a rota e salvar no localStorage
   const handleCombinedClick = () => {
+    if (!suggestionsList.includes(inputValue.trim())) {
+      // Validação se o valor existe na lista
+      toast({
+        title: "Ambiente não encontrado.",
+        description: `O ambiente "${inputValue}" não existe na lista.`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top", // Define o toast para aparecer de cima
+      });
+      return;
+    }
+
     if (inputValue.trim()) {
       // Adiciona o novo destino ao localStorage
       LocalStorageService.setRecentDestination(inputValue.trim());

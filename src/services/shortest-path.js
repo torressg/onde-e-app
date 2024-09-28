@@ -51,20 +51,48 @@ async function getCoordinatesByNames(names) {
     return coordinates;
 }
 
-// Função para montar o GeoJSON com as coordenadas obtidas
 function montarGeoJSON(coordinates) {
+    const features = [];
+
+    // Adiciona o ponto de início com ícone personalizado
+    features.push({
+        'type': 'Feature',
+        'properties': {
+            'message': 'Início', // Mensagem customizada para o ponto de início
+            'iconSize': [50, 50]  // Tamanho customizado do ícone
+        },
+        'geometry': {
+            'type': 'Point',
+            'coordinates': coordinates[0] // A primeira coordenada
+        }
+    });
+
+    // Adiciona a linha da rota
+    features.push({
+        'type': 'Feature',
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': coordinates // As coordenadas obtidas
+        },
+        'properties': {} // Propriedades vazias para a linha
+    });
+
+    // Adiciona o ponto de fim com ícone personalizado
+    features.push({
+        'type': 'Feature',
+        'properties': {
+            'message': 'Destino', // Mensagem customizada para o ponto de fim
+            'iconSize': [50, 50]  // Tamanho customizado do ícone
+        },
+        'geometry': {
+            'type': 'Point',
+            'coordinates': coordinates[coordinates.length - 1] // A última coordenada
+        }
+    });
+
     return {
         'type': 'FeatureCollection',
-        'features': [
-            {
-                'type': 'Feature',
-                'geometry': {
-                    'type': 'LineString',
-                    'properties': {},
-                    'coordinates': coordinates // As coordenadas obtidas
-                }
-            }
-        ]
+        'features': features
     };
 }
 

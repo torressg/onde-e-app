@@ -20,7 +20,7 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
             // Adiciona a camada de prédios (3D)
             mapInstance.addSource('geojson1', {
                 type: 'geojson',
-                data: '/data/uscsAmbientesMap.geojson'
+                data: '/data/uscsAmbientesMap.geojson',
             });
 
             mapInstance.addLayer({
@@ -33,13 +33,13 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
                     'fill-extrusion-height': 5,
                     'fill-extrusion-base': 1,
                     'fill-extrusion-opacity': 1,
-                }
+                },
             });
 
             // Adiciona a camada de circulação
             mapInstance.addSource('geojson2', {
                 type: 'geojson',
-                data: '/data/uscsCirculacaoMap.geojson'
+                data: '/data/uscsCirculacaoMap.geojson',
             });
 
             mapInstance.addLayer({
@@ -50,14 +50,14 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
                 paint: {
                     'fill-color': '#888888',
                     'fill-opacity': 1,
-                }
+                },
             }, 'geojson3d-layer');
 
             // Adicionar rota como linha no mapa
             if (geoJson) {
                 mapInstance.addSource('route', {
                     type: 'geojson',
-                    data: geoJson // O GeoJSON da rota
+                    data: geoJson, // O GeoJSON da rota
                 });
 
                 mapInstance.addLayer({
@@ -71,6 +71,32 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
                     paint: {
                         'line-color': '#ff0000', // Cor da linha
                         'line-width': 4,
+                    },
+                });
+
+                geoJson.features.forEach((feature: any) => {
+                    if (feature.geometry.type === 'Point') {
+                        const el = document.createElement('div');
+                        el.className = 'marker';
+                
+                        // Definindo o tamanho do marcador com base no iconSize
+                        el.style.width = `${feature.properties.iconSize[0]}px`;
+                        el.style.height = `${feature.properties.iconSize[1]}px`;
+                        el.style.backgroundSize = 'contain'; // Ajustar a imagem ao tamanho do marcador
+                        el.style.backgroundRepeat = 'no-repeat';
+                        el.style.backgroundPosition = 'center';
+                
+                        // Verificar se é o ponto de início ou fim e aplicar o ícone correspondente
+                        if (feature.properties.message === 'Início') {
+                            el.style.backgroundImage = 'url("/assets/start.svg")'; // Ícone personalizado de início
+                        } else if (feature.properties.message === 'Destino') {
+                            el.style.backgroundImage = 'url("/assets/end.svg")'; // Ícone personalizado de destino
+                        }
+                
+                        // Adicionar o marcador ao mapa com âncora na base do ícone
+                        new maplibregl.Marker({ element: el, anchor: 'bottom' }) // âncora ajustada para 'bottom'
+                            .setLngLat(feature.geometry.coordinates)
+                            .addTo(mapInstance);
                     }
                 });
             }
