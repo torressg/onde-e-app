@@ -53,7 +53,23 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
                 },
             }, 'geojson3d-layer');
 
-            // Adicionar rota como linha no mapa
+            mapInstance.on('click', 'geojson3d-layer', (e) => {
+                if (e.features && e.features.length > 0) {
+                    const coordinates = e.features[0].geometry.type === "Point" ?
+                        (e.features[0].geometry.coordinates as [number, number]) :
+                        (e.lngLat.toArray() as [number, number]);
+
+                    const properties = e.features[0].properties;
+                    new maplibregl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(`
+                            <strong><h3 style="color: black;">${properties.Name || 'Ambiente sem nomeação'}</h3></strong>
+                            <p style="color: black;">${properties.TipoAmb || 'No Subtitle'}</p>
+                        `)
+                        .addTo(mapInstance);
+                }
+            });
+
             if (geoJson) {
                 mapInstance.addSource('route', {
                     type: 'geojson',
@@ -69,36 +85,52 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
                         'line-cap': 'round',
                     },
                     paint: {
-                        'line-color': '#ff0000', // Cor da linha
-                        'line-width': 4,
+                        'line-color': '#1c1c1c',
+                        'line-width': 5, 
+                        
                     },
                 });
 
+                const bounds = new maplibregl.LngLatBounds();
+
                 geoJson.features.forEach((feature: any) => {
+                    if (feature.geometry.type === 'LineString') {
+                        feature.geometry.coordinates.forEach((coord: any) => {
+                            bounds.extend(coord);
+                        });
+                    }
+
                     if (feature.geometry.type === 'Point') {
                         const el = document.createElement('div');
                         el.className = 'marker';
-                
+
                         // Definindo o tamanho do marcador com base no iconSize
                         el.style.width = `${feature.properties.iconSize[0]}px`;
                         el.style.height = `${feature.properties.iconSize[1]}px`;
                         el.style.backgroundSize = 'contain'; // Ajustar a imagem ao tamanho do marcador
                         el.style.backgroundRepeat = 'no-repeat';
                         el.style.backgroundPosition = 'center';
-                
+
                         // Verificar se é o ponto de início ou fim e aplicar o ícone correspondente
                         if (feature.properties.message === 'Início') {
                             el.style.backgroundImage = 'url("/assets/start.svg")'; // Ícone personalizado de início
                         } else if (feature.properties.message === 'Destino') {
                             el.style.backgroundImage = 'url("/assets/end.svg")'; // Ícone personalizado de destino
                         }
-                
+
                         // Adicionar o marcador ao mapa com âncora na base do ícone
-                        new maplibregl.Marker({ element: el, anchor: 'bottom' }) // âncora ajustada para 'bottom'
+                        new maplibregl.Marker({ element: el, anchor: 'bottom' })
                             .setLngLat(feature.geometry.coordinates)
                             .addTo(mapInstance);
+
+                        // Adiciona o ponto de início/fim aos limites
+                        bounds.extend(feature.geometry.coordinates);
                     }
                 });
+
+                // Ajusta o mapa para focar nos limites da rota
+                mapInstance.fitBounds(bounds, { padding: 20, maxZoom: 19 })
+
             }
         });
 
