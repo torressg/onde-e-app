@@ -8,7 +8,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  useToast, // Importação do toast
+  useToast,
 } from "@chakra-ui/react";
 import { SearchIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { fetchAmbientes } from "@/services/dbAmbientes";
@@ -24,8 +24,7 @@ const SearchBar: React.FC<{
   const [loading, setLoading] = useState(true);
   const [startNode, setStartNode] = useState("Entrada"); // Valor fixo para o ponto inicial
   const [endNode, setEndNode] = useState(""); // Novo estado para o ponto final/endNode
-
-  const toast = useToast(); // Criação do toast
+  const toast = useToast();
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -47,36 +46,37 @@ const SearchBar: React.FC<{
     loadAmbientes();
   }, []);
 
-  // Função combinada para procurar a rota e salvar no localStorage
   const handleCombinedClick = () => {
-    if (!suggestionsList.includes(inputValue.trim())) {
-      // Validação se o valor existe na lista
-      toast({
-        title: "Ambiente não encontrado.",
-        description: `O ambiente "${inputValue}" não existe.`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top", // Define o toast para aparecer de cima
-      });
-      return;
-    }
-
     if (inputValue.trim()) {
-      // Adiciona o novo destino ao localStorage
-      LocalStorageService.setRecentDestination(inputValue.trim());
-      setInputValue(""); // Limpa o input após enviar
-      console.log("Search icon clicked and destination saved");
+      const matchingSuggestion = suggestionsList.find(
+        (suggestion) =>
+          suggestion.toLowerCase() === inputValue.toLowerCase().trim()
+      );
 
-      // Chama a função de busca com startNode e endNode
-      onSearch(startNode, endNode);
+      if (matchingSuggestion) {
+        LocalStorageService.setRecentDestination(matchingSuggestion);
+        setEndNode(matchingSuggestion);
+        setInputValue("");
+
+        onSearch(startNode, matchingSuggestion);
+      } else {
+        toast({
+          title: "Ambiente não encontrado.",
+          description: "Por favor, verifique o nome e tente novamente.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+      }
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
-    setEndNode(value); // Define o valor do input como o endNode
+
+    setEndNode(value.toLowerCase());
 
     if (value) {
       const filtered = suggestionsList.filter((suggestion) =>
@@ -127,10 +127,7 @@ const SearchBar: React.FC<{
         />
         {inputValue && (
           <InputRightElement width="3rem" height="100%" display="flex">
-            <div
-              onClick={handleCombinedClick} // Aqui chama a função combinada
-              style={{ cursor: "pointer" }}
-            >
+            <div onClick={handleCombinedClick} style={{ cursor: "pointer" }}>
               <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
             </div>
           </InputRightElement>
