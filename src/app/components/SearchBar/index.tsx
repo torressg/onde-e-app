@@ -13,6 +13,7 @@ import {
 import { SearchIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { fetchAmbientes } from "@/services/dbAmbientes";
 import AutoCompleteList from "./AutoCompleteList";
+import ModalStartLocation from "./modalStartLocation"; // Importando o modal
 
 const SearchBar: React.FC<{
   inputValue: string;
@@ -22,9 +23,9 @@ const SearchBar: React.FC<{
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [startNode, setStartNode] = useState("Entrada"); // Valor fixo para o ponto inicial
   const [endNode, setEndNode] = useState(""); // Novo estado para o ponto final/endNode
   const toast = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -34,7 +35,7 @@ const SearchBar: React.FC<{
         const verifyData = data.filter(
           (i: any) => i.nome !== "NADA" && i.nome.trim() !== ""
         );
-        const names = verifyData.map((ambiente: any) => ambiente.nome); // Extrai os nomes dos ambientes
+        const names = verifyData.map((ambiente: any) => ambiente.nome);
         setSuggestionsList(names);
       } catch (error) {
         console.error("Erro ao carregar ambientes:", error);
@@ -54,11 +55,8 @@ const SearchBar: React.FC<{
       );
 
       if (matchingSuggestion) {
-        LocalStorageService.setRecentDestination(matchingSuggestion);
         setEndNode(matchingSuggestion);
-        setInputValue("");
-
-        onSearch(startNode, matchingSuggestion);
+        setIsModalOpen(true);
       } else {
         toast({
           title: "Ambiente não encontrado.",
@@ -99,6 +97,14 @@ const SearchBar: React.FC<{
     setInputValue(suggestion);
     setEndNode(suggestion); // Define a sugestão clicada como o endNode
     setFilteredSuggestions([]); // Remove sugestões após o clique
+  };
+
+  // Função que será chamada quando o usuário confirmar o ponto de partida no modal
+  const handleConfirmStartNode = (startNode: string) => {
+    LocalStorageService.setRecentDestination(endNode);
+    setIsModalOpen(false); 
+    setInputValue("");
+    onSearch(startNode, endNode);
   };
 
   return (
@@ -142,6 +148,15 @@ const SearchBar: React.FC<{
           />
         </div>
       )}
+
+      {/* Chamando o ModalStartLocation e passando os dados */}
+      <ModalStartLocation
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        destino={endNode}
+        startOptions={["Entrada", ...suggestionsList.filter((sug) => sug !== endNode)]}
+        onConfirm={handleConfirmStartNode}
+      />
     </Box>
   );
 };
