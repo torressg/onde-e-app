@@ -5,38 +5,40 @@ import BurgerMenu from "./components/BurgerMenu";
 import RecentMenu from "./components/RecentMenu";
 import { calcularCaminhoEGeoJSON } from "@/services/shortest-path";
 import { useEffect, useState } from "react";
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Spinner } from "@chakra-ui/react";
 
 type GeoJsonType = {
   type: string;
   features: (
     | {
-      type: "Feature";
-      properties: {
-        message: string;
-        iconSize: number[];
-      };
-      geometry: {
-        type: "Point";
-        coordinates: [number, number];
-      };
-    }
+        type: "Feature";
+        properties: {
+          message: string;
+          iconSize: number[];
+        };
+        geometry: {
+          type: "Point";
+          coordinates: [number, number];
+        };
+      }
     | {
-      type: "Feature";
-      properties: {};
-      geometry: {
-        type: "LineString";
-        coordinates: [number, number][];
-      };
-    }
+        type: "Feature";
+        properties: {};
+        geometry: {
+          type: "LineString";
+          coordinates: [number, number][];
+        };
+      }
   )[];
 } | null;
 
 const Home: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [geoJson, setGeoJson] = useState<GeoJsonType>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSearch = async (startNode: string, endNode: string) => {
+    setLoading(true);
     try {
       const result = await calcularCaminhoEGeoJSON(startNode, endNode);
       if (result) {
@@ -46,6 +48,8 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("Erro ao calcular o caminho:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,6 +102,29 @@ const Home: React.FC = () => {
           setInputValue={setInputValue}
         />
       </div>
+
+      {loading && (
+        <Box
+          position="fixed"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          zIndex={1000}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          backgroundColor="rgba(0, 0, 0, 0.5)"
+          height="100%"
+          width="100%"
+        >
+          <Spinner size="xl" color="#F8A801" />
+          <p className="mt-2 text-white">
+            Gerando rota, por favor aguarde...
+          </p>
+        </Box>
+      )}
+
       <FullScreenMap geoJson={geoJson} />
     </div>
   );
