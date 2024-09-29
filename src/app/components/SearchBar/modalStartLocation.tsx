@@ -40,7 +40,13 @@ const ModalStartLocation: React.FC<ModalStartLocationProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent bg="#1c1c1c" color="white" borderRadius="md" p={4}>
+      <ModalContent
+        bg="#1c1c1c"
+        color="white"
+        borderRadius="md"
+        p={4}
+        maxW="80%"
+      >
         <ModalHeader fontSize="lg" fontWeight="bold">
           O destino escolhido é {destino}
         </ModalHeader>
