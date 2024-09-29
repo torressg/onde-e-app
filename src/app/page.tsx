@@ -4,7 +4,7 @@ import SearchBar from "./components/SearchBar/index";
 import BurgerMenu from "./components/BurgerMenu";
 import RecentMenu from "./components/RecentMenu";
 import { calcularCaminhoEGeoJSON } from "@/services/shortest-path";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 
 type GeoJsonType = {
@@ -34,7 +34,6 @@ type GeoJsonType = {
 
 const Home: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
-
   const [geoJson, setGeoJson] = useState<GeoJsonType>(null);
 
   const handleSearch = async (startNode: string, endNode: string) => {
@@ -51,8 +50,18 @@ const Home: React.FC = () => {
   };
 
   const handleCancelRoute = () => {
-    setGeoJson(null);
+    setGeoJson(null); // Limpa o GeoJSON quando a rota for cancelada
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const ambiente = params.get("ambiente");
+      if (ambiente) {
+        setInputValue(decodeURIComponent(ambiente));
+      }
+    }
+  }, []);
 
   return (
     <div>
@@ -65,6 +74,7 @@ const Home: React.FC = () => {
         </div>
       </header>
 
+      {/* Condicional para o botão de Cancelar Rota */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-40 mb-24">
         {geoJson && (
           <Button
@@ -80,6 +90,7 @@ const Home: React.FC = () => {
         )}
       </div>
 
+      {/* Barra de pesquisa */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-40 w-80 mb-11">
         <SearchBar
           onSearch={handleSearch}
