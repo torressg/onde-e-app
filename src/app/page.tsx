@@ -9,27 +9,17 @@ import { Box, Button, Spinner } from "@chakra-ui/react";
 
 type GeoJsonType = {
   type: string;
-  features: (
-    | {
-        type: "Feature";
-        properties: {
-          message: string;
-          iconSize: number[];
-        };
-        geometry: {
-          type: "Point";
-          coordinates: [number, number];
-        };
-      }
-    | {
-        type: "Feature";
-        properties: {};
-        geometry: {
-          type: "LineString";
-          coordinates: [number, number][];
-        };
-      }
-  )[];
+  features: Array<{
+    type: "Feature";
+    properties: {
+      message?: string;
+      iconSize?: number[];
+    };
+    geometry: {
+      type: "Point" | "LineString";
+      coordinates: [number, number] | [number, number][];
+    };
+  }>;
 } | null;
 
 const Home: React.FC = () => {
