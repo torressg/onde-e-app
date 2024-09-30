@@ -55,7 +55,7 @@ const BurgerMenu = () => {
             as={NextLink}
             onClick={() => toggleMenu("/")}
             href="/"
-            color={isActive("/") ? "fff" : "#F8A801"}
+            color={isActive("/") ? "#fff" : "#F8A801"}
             fontSize="2xl"
             fontWeight="semibold"
             p="4"
@@ -66,7 +66,7 @@ const BurgerMenu = () => {
             as={NextLink}
             onClick={() => toggleMenu("/ambientes")}
             href="/ambientes"
-            color={isActive("/ambientes") ? "fff" : "#F8A801"}
+            color={isActive("/ambientes") ? "#fff" : "#F8A801"}
             fontSize="2xl"
             fontWeight="semibold"
             p="4"
@@ -77,7 +77,7 @@ const BurgerMenu = () => {
             as={NextLink}
             onClick={() => toggleMenu("/contato")}
             href="/contato"
-            color={isActive("/contato") ? "fff" : "#F8A801"}
+            color={isActive("/contato") ? "#fff" : "#F8A801"}
             fontSize="2xl"
             fontWeight="semibold"
             p="4"
@@ -88,7 +88,7 @@ const BurgerMenu = () => {
             as={NextLink}
             onClick={() => toggleMenu("/ajuda")}
             href="/ajuda"
-            color={isActive("/ajuda") ? "fff" : "#F8A801"}
+            color={isActive("/ajuda") ? "#fff" : "#F8A801"}
             fontSize="2xl"
             fontWeight="semibold"
             p="4"
