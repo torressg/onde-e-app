@@ -24,7 +24,7 @@ const SearchBar: React.FC<{
   const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const removeAutoComplete = () => {
-    setFilteredSuggestions([]);
+    setTimeout(() => setFilteredSuggestions([]), 200);
   };
   const [endNode, setEndNode] = useState(""); // Novo estado para o ponto final/endNode
   const toast = useToast();
@@ -113,7 +113,7 @@ const SearchBar: React.FC<{
 
   return (
     <Box position="relative" width="100%">
-      <InputGroup size="md" className="w-80" style={{ zIndex: 1 }}>
+      <InputGroup size="md" className="w-80" style={{ zIndex: 1 }} >
         <InputLeftElement pointerEvents="none" height="100%" display="flex">
           <SearchIcon color="#F8A801" w="2rem" h="2rem" pl="0.813rem" />
         </InputLeftElement>
