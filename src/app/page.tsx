@@ -114,7 +114,7 @@ const Home: React.FC = () => {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          backgroundColor="rgba(0, 0, 0, 0.5)"
+          backgroundColor="rgba(0, 0, 0, 0.8)"
           height="100%"
           width="100%"
         >
