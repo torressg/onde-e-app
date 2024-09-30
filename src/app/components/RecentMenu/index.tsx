@@ -14,7 +14,13 @@ import { LocalStorageService } from "@/services/LocalStorageService";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 
-const RecentMenu = ({ inputValue }: { inputValue: string }) => {
+const RecentMenu = ({
+  inputValue,
+  setInputValue,
+}: {
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   const [destinations, setDestinations] = useState<string[]>([]);
 
   useEffect(() => {
@@ -22,6 +28,11 @@ const RecentMenu = ({ inputValue }: { inputValue: string }) => {
     const storedDestinations = LocalStorageService.getRecentDestinations();
     setDestinations(storedDestinations);
   }, [inputValue]); // Executa toda vez que o inputValue mudar
+
+  // Função para lidar com a seleção de um destino recente
+  const handleSelectDestination = (destination: string) => {
+    setInputValue(destination); // Atualiza o inputValue no SearchBar
+  };
 
   return (
     <div className="relative z-50">
@@ -52,6 +63,7 @@ const RecentMenu = ({ inputValue }: { inputValue: string }) => {
                 color="white"
                 _hover={{ bg: "#FCA311", color: "#1C1C1C" }}
                 _focus={{ bg: "#FCA311", color: "#1C1C1C" }}
+                onClick={() => handleSelectDestination(item)} // Chama a função ao clicar no item
               >
                 {item}
               </MenuItem>

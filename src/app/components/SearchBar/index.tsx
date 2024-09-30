@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LocalStorageService } from "../../../services/LocalStorageService";
 import {
   Box,
@@ -8,21 +8,27 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { SearchIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { fetchAmbientes } from "@/services/dbAmbientes";
 import AutoCompleteList from "./AutoCompleteList";
+import ModalStartLocation from "./modalStartLocation"; // Importando o modal
 
 const SearchBar: React.FC<{
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ inputValue, setInputValue }) => {
+  onSearch: (startNode: string, endNode: string) => void;
+}> = ({ inputValue, setInputValue, onSearch }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [suggestionsList, setSuggestionsList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const removeAutoComplete = () => {
     setFilteredSuggestions([]);
   };
+  const [endNode, setEndNode] = useState(""); // Novo estado para o ponto final/endNode
+  const toast = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -32,7 +38,7 @@ const SearchBar: React.FC<{
         const verifyData = data.filter(
           (i: any) => i.nome !== "NADA" && i.nome.trim() !== ""
         );
-        const names = verifyData.map((ambiente: any) => ambiente.nome); // Extrai os nomes dos ambientes
+        const names = verifyData.map((ambiente: any) => ambiente.nome);
         setSuggestionsList(names);
       } catch (error) {
         console.error("Erro ao carregar ambientes:", error);
@@ -44,9 +50,34 @@ const SearchBar: React.FC<{
     loadAmbientes();
   }, []);
 
+  const handleCombinedClick = () => {
+    if (inputValue.trim()) {
+      const matchingSuggestion = suggestionsList.find(
+        (suggestion) =>
+          suggestion.toLowerCase() === inputValue.toLowerCase().trim()
+      );
+
+      if (matchingSuggestion) {
+        setEndNode(matchingSuggestion);
+        setIsModalOpen(true);
+      } else {
+        toast({
+          title: "Ambiente não encontrado.",
+          description: "Por favor, verifique o nome e tente novamente.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+      }
+    }
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
+
+    setEndNode(value.toLowerCase());
 
     if (value) {
       const filtered = suggestionsList.filter((suggestion) =>
@@ -58,26 +89,26 @@ const SearchBar: React.FC<{
     }
   };
 
-  const handleClickSearchToStorageLocal = () => {
-    if (inputValue.trim()) {
-      // Adiciona o novo destino ao localStorage e garante o limite de 4 itens
-      LocalStorageService.setRecentDestination(inputValue.trim());
-      setInputValue(""); // Limpa o input após enviar
-      console.log("Search icon clicked and destination saved");
-    }
-  };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Evita o comportamento padrão do formulário
-      handleClickSearchToStorageLocal(); // Chama a função de envio ao pressionar Enter
       setFilteredSuggestions([]);
+      handleCombinedClick(); // Chama a função combinada ao pressionar Enter
     }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
     setInputValue(suggestion);
+    setEndNode(suggestion); // Define a sugestão clicada como o endNode
     setFilteredSuggestions([]); // Remove sugestões após o clique
+  };
+
+  // Função que será chamada quando o usuário confirmar o ponto de partida no modal
+  const handleConfirmStartNode = (startNode: string) => {
+    LocalStorageService.setRecentDestination(endNode);
+    setIsModalOpen(false); 
+    setInputValue("");
+    onSearch(startNode, endNode);
   };
 
   return (
@@ -107,10 +138,7 @@ const SearchBar: React.FC<{
         />
         {inputValue && (
           <InputRightElement width="3rem" height="100%" display="flex">
-            <div
-              onClick={handleClickSearchToStorageLocal}
-              style={{ cursor: "pointer" }}
-            >
+            <div onClick={handleCombinedClick} style={{ cursor: "pointer" }}>
               <ArrowForwardIcon color="#F8A801" w="24px" h="24px" />
             </div>
           </InputRightElement>
@@ -125,6 +153,15 @@ const SearchBar: React.FC<{
           />
         </div>
       )}
+
+      {/* Chamando o ModalStartLocation e passando os dados */}
+      <ModalStartLocation
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        destino={endNode}
+        startOptions={["Entrada", ...suggestionsList.filter((sug) => sug !== endNode)]}
+        onConfirm={handleConfirmStartNode}
+      />
     </Box>
   );
 };

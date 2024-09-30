@@ -17,6 +17,7 @@
     "@mui/icons-material": "^5.16.7",
     "@next/env": "^14.2.7",
     "axios": "^1.7.6",
+    "dijkstrajs": "^1.0.3",
     "framer-motion": "^11.3.29",
     "geojson": "^0.5.0",
     "maplibre-gl": "^4.5.2",

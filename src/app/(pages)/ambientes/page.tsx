@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // Import correto para o app directory
 import BurgerMenu from "@/app/components/BurgerMenu";
 import {
   IconButton,
@@ -38,6 +39,7 @@ const AmbientesPage: React.FC = () => {
   const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
 
   useEffect(() => {
     const loadAmbientes = async () => {
@@ -84,6 +86,10 @@ const AmbientesPage: React.FC = () => {
   const redefinirFiltro = () => {
     setFiltrosSelecionados([]);
     setFilteredAmbientes(ambientes);
+  };
+
+  const handleGoToMain = (nomeAmbiente: string) => {
+    router.push(`/?ambiente=${encodeURIComponent(nomeAmbiente)}`);
   };
 
   return (
@@ -210,6 +216,7 @@ const AmbientesPage: React.FC = () => {
                 width="100%"
                 bg="#FCA311"
                 color="#1c1c1c"
+                onClick={() => handleGoToMain(selectedAmbiente?.nome || '')} // Redireciona ao clicar
                 _hover={{ bg: "#F78900" }}
                 borderRadius="md"
               >
