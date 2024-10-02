@@ -875,7 +875,7 @@
         "properties": {
           "TipoAmb": "Laboratório",
           "id": 20,
-          "Name": "Lab Robotica"
+          "Name": "Laboratório Robótica"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -1563,7 +1563,7 @@
         "properties": {
           "TipoAmb": "Laboratório",
           "id": 35,
-          "Name": "Lab Impressora 3d 02"
+          "Name": "Laboratório Impressora 3d 02"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -1601,7 +1601,7 @@
         "properties": {
           "TipoAmb": "Laboratório",
           "id": 36,
-          "Name": "Lab Impressora 3D"
+          "Name": "Laboratório Impressora 3D"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -2139,7 +2139,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 48,
-          "Name": "WC"
+          "Name": "Banheiro"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -2506,7 +2506,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 56,
-          "Name": "WC Feminino"
+          "Name": "Banheiro Feminino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3361,7 +3361,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 75,
-          "Name ": "WC p/PCD"
+          "Name ": "Banheiro PCD"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3399,7 +3399,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 76,
-          "Name": "WC Masculino"
+          "Name": "Banheiro Masculino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3437,7 +3437,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 77,
-          "Name": "WC Feminino"
+          "Name": "Banheiro Feminino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3475,7 +3475,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 78,
-          "Name": "WC Masculino"
+          "Name": "Banheiro Masculino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3513,7 +3513,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 79,
-          "Name": "WC Feminino"
+          "Name": "Banheiro Feminino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3747,7 +3747,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 85,
-          "Name": "WC Masculino"
+          "Name": "Banheiro Masculino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3785,7 +3785,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 86,
-          "Name": "WC p\\PCD"
+          "Name": "Banheiro PCD p\\PCD"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3823,7 +3823,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 87,
-          "Name": "WC p\\PCD"
+          "Name": "Banheiro PCD p\\PCD"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -3861,7 +3861,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 88,
-          "Name": "WC Femenino"
+          "Name": "Banheiro Feminino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -4292,7 +4292,7 @@
         "properties": {
           "TipoAmb": "Laboratório",
           "id": 98,
-          "Name": "LAB 1"
+          "Name": "Laboratório 1"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -4860,7 +4860,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 111,
-          "Name": "WC Masculino Financeiro"
+          "Name": "Banheiro Masculino Financeiro"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -4898,7 +4898,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 112,
-          "Name": "WC Feminino Financeiro"
+          "Name": "Banheiro Feminino Financeiro"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -5012,7 +5012,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 115,
-          "Name": "WC Masculino"
+          "Name": "Banheiro Masculino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -5050,7 +5050,7 @@
         "properties": {
           "TipoAmb": "Ambiente Comum",
           "id": 116,
-          "Name": "WC Feminino"
+          "Name": "Banheiro Feminino"
         },
         "geometry": {
           "type": "MultiPolygon",
@@ -5088,7 +5088,7 @@
         "properties": {
           "TipoAmb": "Laboratório",
           "id": 117,
-          "Name": "Lab de Artes"
+          "Name": "Laboratório de Artes"
         },
         "geometry": {
           "type": "MultiPolygon",
