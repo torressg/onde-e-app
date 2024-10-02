@@ -115,7 +115,7 @@ const AjudaPage: React.FC = () => {
                     aplicativo, você pode acessar a aba de Suporte:
                   </p>
                   <ol className="pb-4">
-                    <li>-Clique no ícone de Ajuda no menu principal.</li>
+                    <li>-Clique no botão do menu principal.</li>
                     <li>
                       -Selecione a opção Ajuda de uso para respostas das
                       perguntas mais frequentes.
