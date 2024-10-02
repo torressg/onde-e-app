@@ -55,19 +55,24 @@ const RecentMenu = ({
           right={-10}
         >
           <MenuGroup title="Destinos recentes" color="white">
-            {destinations.map((item, index) => (
-              <MenuItem
-                key={index}
-                icon={<ShareLocationIcon />}
-                bg="#1C1C1C"
-                color="white"
-                _hover={{ bg: "#FCA311", color: "#1C1C1C" }}
-                _focus={{ bg: "#FCA311", color: "#1C1C1C" }}
-                onClick={() => handleSelectDestination(item)} // Chama a função ao clicar no item
-              >
-                {item}
-              </MenuItem>
-            ))}
+            {destinations.length < 1 ?
+              <div className="flex justify-center my-2 mx-4">
+                <p className="text-black text-xs">Não houve pesquisas recentes</p>
+              </div>
+              :
+              destinations.map((item, index) => (
+                <MenuItem
+                  key={index}
+                  icon={<ShareLocationIcon />}
+                  bg="#1C1C1C"
+                  color="white"
+                  _hover={{ bg: "#FCA311", color: "#1C1C1C" }}
+                  _focus={{ bg: "#FCA311", color: "#1C1C1C" }}
+                  onClick={() => handleSelectDestination(item)} // Chama a função ao clicar no item
+                >
+                  {item}
+                </MenuItem>
+              ))}
           </MenuGroup>
         </MenuList>
       </Menu>
