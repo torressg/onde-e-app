@@ -102,16 +102,31 @@ const AjudaPage: React.FC = () => {
               <h2>
                 <AccordionButton width="100%">
                   <Box flex="1" textAlign="left" textColor="#fff">
-                    Section 2 title
+                    Funcionalidades Extras
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                <div className="text-branco">
+                  <h3 className="font-bold pb-4">Suporte</h3>
+                  <p>
+                    Caso tenha dúvidas ou encontre dificuldades no uso do
+                    aplicativo, você pode acessar a aba de Suporte:
+                  </p>
+                  <ol className="pb-4">
+                    <li>-Clique no botão do menu principal.</li>
+                    <li>
+                      -Selecione a opção Ajuda de uso para respostas das
+                      perguntas mais frequentes.
+                    </li>
+                    <li>
+                      -Se sua dúvida não for solucionada, clique em Suporte ao
+                      usuário e envie uma mensagem com sua dúvida. Você receberá
+                      uma resposta em até 24 horas.
+                    </li>
+                  </ol>
+                </div>
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
