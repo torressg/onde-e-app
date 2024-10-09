@@ -34,7 +34,7 @@ interface Ambiente {
 const AmbientesPage: React.FC = () => {
   const [ambientes, setAmbientes] = useState<Ambiente[]>([]);
   const [filteredAmbientes, setFilteredAmbientes] = useState<Ambiente[]>([]);
-  const [filtrosSelecionados, setFiltrosSelecionados] = useState<string[]>([]);
+  const [selectedFilters, setFiltrosSelecionados] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(null);
   const [loading, setLoading] = useState(true);
@@ -71,14 +71,14 @@ const AmbientesPage: React.FC = () => {
     setSelectedAmbiente(null);
   };
 
-  const aplicarFiltro = (onClose: () => void) => {
-    if (filtrosSelecionados.length === 0) {
+  const applyFilter = (onClose: () => void) => {
+    if (selectedFilters.length === 0) {
       setFilteredAmbientes(ambientes);
     } else {
-      const ambientesFiltrados = ambientes.filter((ambiente) =>
-        filtrosSelecionados.includes(ambiente.tipo_ambiente)
+      const filteredAmbientes = ambientes.filter((ambiente) =>
+        selectedFilters.includes(ambiente.tipo_ambiente)
       );
-      setFilteredAmbientes(ambientesFiltrados);
+      setFilteredAmbientes(filteredAmbientes);
     }
     onClose();
   };
@@ -118,7 +118,7 @@ const AmbientesPage: React.FC = () => {
                     <VStack align="start" px={4} py={2}>
                       <h3 className="text-lg font-bold mb-2">Filtrar por:</h3>
                       <CheckboxGroup
-                        value={filtrosSelecionados}
+                        value={selectedFilters}
                         onChange={(val) => setFiltrosSelecionados(val as string[])}
                       >
                         <Checkbox value="Sala de Aula" colorScheme="customOrange">
@@ -132,7 +132,7 @@ const AmbientesPage: React.FC = () => {
                         </Checkbox>
                       </CheckboxGroup>
                       <Button
-                        onClick={() => aplicarFiltro(onClose)}
+                        onClick={() => applyFilter(onClose)}
                         bg="#FCA311"
                         color="black"
                         size="sm"

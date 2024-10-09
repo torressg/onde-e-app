@@ -30,7 +30,7 @@ type GraphType = {
 const graph: GraphType = require('../../public/data/grafos.json');
 
 // Função para encontrar o caminho mais curto usando Dijkstra
-function encontrarCaminho(startNode: string, endNode: string): string[] {
+function findRoute(startNode: string, endNode: string): string[] {
     const formattedGraph: GraphType = {};
 
     Object.keys(graph).forEach(node => {
@@ -78,7 +78,7 @@ async function getCoordinatesByNames(names: string[]): Promise<[number, number][
 }
 
 // Função para montar o GeoJSON
-function montarGeoJSON(coordinates: [number, number][]): GeoJsonType {
+function makeGeoJSON(coordinates: [number, number][]): GeoJsonType {
     const features: GeoJsonFeature[] = [];
 
     // Verifica se as coordenadas são válidas
@@ -129,16 +129,16 @@ function montarGeoJSON(coordinates: [number, number][]): GeoJsonType {
 }
 
 // Função principal para encontrar o caminho e gerar o GeoJSON
-export async function calcularCaminhoEGeoJSON(startNode: string, endNode: string): Promise<GeoJsonType | undefined> {
+export async function calculateRouteAndGeoJSON(startNode: string, endNode: string): Promise<GeoJsonType | undefined> {
     try {
         // 1. Encontrar o caminho mais curto
-        const caminho = encontrarCaminho(startNode, endNode);
+        const route = findRoute(startNode, endNode);
 
         // 2. Buscar as coordenadas dos nomes do caminho
-        const coordinates = await getCoordinatesByNames(caminho);
+        const coordinates = await getCoordinatesByNames(route);
 
         // 3. Montar o GeoJSON com as coordenadas
-        const geoJson = montarGeoJSON(coordinates);
+        const geoJson = makeGeoJSON(coordinates);
 
         return geoJson;
     } catch (error) {

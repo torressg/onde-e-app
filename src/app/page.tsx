@@ -3,7 +3,7 @@ import FullScreenMap from "./components/Map";
 import SearchBar from "./components/SearchBar/index";
 import BurgerMenu from "./components/BurgerMenu";
 import RecentMenu from "./components/RecentMenu";
-import { calcularCaminhoEGeoJSON } from "@/services/shortest-path";
+import { calculateRouteAndGeoJSON } from "@/services/shortest-path";
 import { useEffect, useState } from "react";
 import { Box, Button, Spinner } from "@chakra-ui/react";
 
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   const handleSearch = async (startNode: string, endNode: string) => {
     setLoading(true);
     try {
-      const result = await calcularCaminhoEGeoJSON(startNode, endNode);
+      const result = await calculateRouteAndGeoJSON(startNode, endNode);
       if (result) {
         setGeoJson(result);
       } else {
