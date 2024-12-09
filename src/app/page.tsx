@@ -69,7 +69,7 @@ const Home: React.FC = () => {
       </header>
 
       {/* Condicional para o botão de Cancelar Rota */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-40 mb-24">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 z-40 w-40 mb-24">
         {geoJson && (
           <Button
             onClick={handleCancelRoute}

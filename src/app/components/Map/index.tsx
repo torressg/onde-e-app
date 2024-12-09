@@ -16,6 +16,13 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
             pitch: 20, // Inclinação para uma visão 3D
         });
 
+        const bounds = new maplibregl.LngLatBounds(
+            [-46.5802, -23.6190], // sudoeste (minLng, minLat)
+            [-46.5783, -23.6170]  // nordeste (maxLng, maxLat)
+          );
+
+        mapInstance.setMaxBounds(bounds);
+
         mapInstance.on('load', () => {
             // Adiciona a camada de prédios (3D)
             mapInstance.addSource('geojson1', {
@@ -86,8 +93,8 @@ const FullScreenMap = ({ geoJson }: { geoJson: any }) => {
                     },
                     paint: {
                         'line-color': '#1c1c1c',
-                        'line-width': 5, 
-                        
+                        'line-width': 5,
+
                     },
                 });
 

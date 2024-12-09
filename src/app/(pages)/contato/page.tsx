@@ -2,13 +2,13 @@
 
 import BurgerMenu from "@/app/components/BurgerMenu";
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
   Input,
   Textarea,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
@@ -20,6 +20,7 @@ const Contato = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false)
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +46,14 @@ const Contato = () => {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (response) {
-        alert("Formulário enviado com sucesso!");
+        toast({
+          title: 'Formulário enviado com sucesso.',
+          status: 'success',
+          duration: 9000,
+          isClosable: false,
+        });
         setName("");
         setEmail("");
         setSubject("");
@@ -126,7 +132,7 @@ const Contato = () => {
 
               <Button bg={"#F8A801"} type="submit"
                 isLoading={isLoading}
-                loadingText="Enviando..." 
+                loadingText="Enviando..."
               >
                 Enviar
               </Button>

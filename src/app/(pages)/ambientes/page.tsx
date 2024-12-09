@@ -13,7 +13,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Button,
@@ -29,6 +28,7 @@ import { fetchAmbientes } from "@/services/dbAmbientes";
 interface Ambiente {
   nome: string;
   tipo_ambiente: string;
+  ref_img: string;
 }
 
 const AmbientesPage: React.FC = () => {
@@ -38,6 +38,7 @@ const AmbientesPage: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAmbiente, setSelectedAmbiente] = useState<Ambiente | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingImage, setLoadingImage] = useState(true); // Estado para o carregamento da imagem
 
   const router = useRouter();
 
@@ -64,11 +65,18 @@ const AmbientesPage: React.FC = () => {
   const openModal = (ambiente: Ambiente) => {
     setSelectedAmbiente(ambiente);
     setIsOpen(true);
+    setLoadingImage(true); // Ativa o loading da imagem quando o modal abre
+
+    // Define o temporizador para 5 segundos
+    setTimeout(() => {
+      setLoadingImage(false); // Desativa o loading após 5 segundos
+    }, 5000);
   };
 
   const closeModal = () => {
     setIsOpen(false);
     setSelectedAmbiente(null);
+    setLoadingImage(true); // Reseta o estado de loadingImage ao fechar o modal
   };
 
   const aplicarFiltro = (onClose: () => void) => {
@@ -203,14 +211,20 @@ const AmbientesPage: React.FC = () => {
             <ModalCloseButton />
             <ModalBody>
               <div className="flex justify-center mb-6">
-                <Image
-                  src="https://via.placeholder.com/200x200"
-                  alt="Imagem do ambiente"
-                  width={200}
-                  height={200}
-                  className="rounded-md object-cover"
-                  style={{ borderRadius: "8px" }}
-                />
+                {loadingImage ? (
+                  // Exibir Spinner por 5 segundos
+                  <Spinner size="xl" color="#FCA311" />
+                ) : (
+                  // Exibir imagem após o timeout de 5 segundos
+                  <Image
+                    src={selectedAmbiente?.ref_img?.trim() ? selectedAmbiente.ref_img : "https://i.imgur.com/pYjkPQs.jpeg"}
+                    alt="Imagem do ambiente"
+                    width={200}
+                    height={200}
+                    className="rounded-md object-cover"
+                    style={{ borderRadius: "8px" }}
+                  />
+                )}
               </div>
               <Button
                 width="100%"
