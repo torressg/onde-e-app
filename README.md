@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 💻 Sobre o projeto
 
-## Getting Started
+🔎 Onde é - Uma aplicação de localização e locomoção para ambientes internos.
 
-First, run the development server:
+Os usuários terão acesso ao website: 
+- Navegação dentro de um mapa 3D do térreo da USCS Campus Conceição
+- Geração de rotas dentro do mapa 3D
+- Lista de ambientes encontrados no térreo
+
+Projeto desenvolvido no 2º semestre de 2024 como parte do Trabalho de Conclusão de Curso (TCC) do curso de Ciência da Computação na Universidade Municipal de São Caetano do Sul (USCS).
+
+## 🎨 Layout
+
+O layout da aplicação está disponível no Figma:
+
+<a href="https://www.figma.com/design/nir8gyMAED39S0mPGQTLLY/Onde%C3%89?node-id=0-1&t=7aLrdIN1HRZLLCVz-1">
+  <img src="https://img.shields.io/badge/Acessar%20Layout%20-Figma-%2304D361">
+</a>
+
+<p align="center">
+  <img alt="PaginaInicial" title="#PaginaInicial" src="./assets/pagina-inical.jpg" width="200px">
+
+  <img alt="ListaDeAmbientes" title="#ListaAmbientes" src="./assets/lista-ambientes.jpg" width="200px">
+</p>
+
+## 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [React][reactjs]
+- [NextJs][NextJs]
+- [TypeScript][typescript]
+
+
+## 🚀 Como executar o projeto
+
+### Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+[Git][git], [Node.js][nodejs]. 
+Além disto é bom ter um editor para trabalhar com o código como [VSCode][vscode].
+
+O projeto também utiliza variáveis de ambientes (.env), para conseguir utilizar a base de banco de dados, será necessário subir as informações no [Back4App][back4app]. As informações das tabelas dos dados estão disponíveis para download no [Google Drive][gdrive].
+
+### 🧭 Rodando a aplicação
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone este repositório
+$ git clone https://github.com/torressg/onde-e-interface
+
+# Acesse a pasta do projeto no seu terminal/cmd
+$ cd onde-e-interface
+
+# Instale as dependências
+$ npm i
+
+# Execute a aplicação em modo de desenvolvimento - Recomendamos configurar o .env antes de rodar a aplicação
+$ npm run dev
+
+# A aplicação será aberta na porta:3000 - acesse http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📝 Licença
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Este projeto esta sobe a licença MIT.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[NextJs]: https://nextjs.org/
+[nodejs]: https://nodejs.org/en
+[vscode]: https://code.visualstudio.com/
+[typescript]: https://www.typescriptlang.org/
+[reactjs]: https://reactjs.org
+[license]: https://opensource.org/licenses/MIT
+[back4app]: https://www.back4app.com/
+[git]: https://git-scm.com
+[gdrive]: https://drive.google.com/drive/folders/1kQaJXp2ytjZYAL31rDRF3U_2frqtNjTX?usp=sharing
