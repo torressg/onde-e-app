@@ -40,7 +40,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 [Git][git], [Node.js][nodejs]. 
 Além disto é bom ter um editor para trabalhar com o código como [VSCode][vscode].
 
-O projeto também utiliza variáveis de ambientes (.env), para conseguir utilizar a base de banco de dados, será necessário subir as informações no [Back4App][back4app]. As informações das tabelas dos dados estão disponíveis para download no [Google Drive][gdrive].
+O projeto também utiliza variáveis de ambientes (.env), para conseguir utilizar a base de banco de dados, será necessário subir as informações no [Back4App][back4app]. As informações das tabelas dos dados estão disponíveis para download no [Google Drive][gdrive]. Dentro deste link, também possui um passo a passo de como configurar o .env na aplicação e como inserir os dados no banco.
 
 ### 🧭 Rodando a aplicação
 
