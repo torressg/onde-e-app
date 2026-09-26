@@ -48,10 +48,10 @@ O projeto também utiliza variáveis de ambientes (.env), para conseguir utiliza
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/torressg/onde-e-interface
+$ git clone https://github.com/torressg/onde-e-app
 
 # Acesse a pasta do projeto no seu terminal/cmd
-$ cd onde-e-interface
+$ cd onde-e-app
 
 # Instale as dependências
 $ npm i
